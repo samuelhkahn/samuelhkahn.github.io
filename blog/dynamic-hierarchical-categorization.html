@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surpassing Frontier AI for CPG &amp; Retail, Samuel Kahn</title>
+<meta name="description" content="Dynamic hierarchical product categorization: a domain-tuned system beating OpenAI and Anthropic.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink active" href="../blog.html">writing</a>
+    <a class="navlink" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>Surpassing Frontier AI for CPG &amp; Retail</h1>
+    <p class="post-meta">Evaluation · Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> This essay was written for the Tickr engineering blog and is
+      reproduced here as part of my portfolio. Figures and results are from work carried out at
+      Tickr.
+    </div>
+    <h2><strong>Dynamic Hierarchical Product Categorization in CPG &amp; Retail</strong></h2>
+    <p>In the consumer packaged goods (CPG) and retail space, managing dynamic inventories across heterogenous data sources poses a significant challenges. Product categories are constantly evolving, with new items emerging and consumer trends shifting. Traditional methods of product categorization are often manual, time-consuming, and prone to errors. This leads to increased operational costs, delayed time-to-market, and poor visibility into categories. Retailers and CPG grapple constantly these inefficiencies and to this point it is largely unsolved in a scalable &amp; accurate way.</p>
+    <p>Tickr’s Dynamic Hierarchical Product Categorization streamlines and automates the process across any category set, significantly reducing costs and saving time. Our AI system delivers unmatched efficiency, outperforming human speed by 100-1,000x. Designed for seamless integration, Tickr’s solution adapts effortlessly to existing systems, regardless of category structures. It can instantly identify new items, categorizing them accurately or matching them to existing products, eliminating the need for costly retraining or manual updates. This adaptability allows businesses to focus on growth without the burden of ongoing maintenance.</p>
+    <p>Dynamic Hierarchical Product Categorization is a comprehensive AI system, encompassing search, preprocessing and post-processing pipelines, an inference stack, and more. At its core are our large language models: our base model Tickr-LLM-base and fine-tuned Tickr-LLM-fine-tuned deployments. Tickr’s platform is also fully interoperable, seamlessly integrating with frontier models from OpenAI and Anthropic, ensuring that businesses can achieve high accuracy and efficiency in managing dynamic product categories, all while being tailored to their specific business and security compliance needs.</p>
+    <p>Our models, including Tickr-LLM-base and Tickr-LLM-fine-tuned, demonstrate exceptional performance, surpassing leading frontier models from OpenAI and Anthropic. As shown in the Figure 1, <strong>Tickr-LLM-base achieves a strong baseline accuracy of 90.8%, and when fine-tuned, the model reaches an impressive 98.1% accuracy, far outperforming competing models such as GPT-4o, GPT-4o-mini, Claude Sonnet 3.5, which hover around 86%.</strong> This performance advantage is driven by our models' superior ability to attend to few-shot examples without category descriptions, learning quickly from demonstrations without requiring extensive retraining.</p>
+    <h2><strong>Why Generative?</strong></h2>
+    <p>Traditional discriminative models classify inputs by mapping them to a fixed set of predefined categories. While effective for stable tasks, they lack flexibility when faced with dynamic or expanding category spaces, a common scenario in CPG and retail, where product categories frequently evolve, grow, and originate from various data sources. Discriminative models require retraining to accommodate new classes, making them inefficient for managing thousands of changing categories.</p>
+    <p>In contrast, generative models like modern LLMs offer superior adaptability and advanced reasoning capabilities for tasks like Hierarchical Product Categorization. Unlike smaller, pre-trained encoder-only models such as BERT-large, which are constrained by predefined classes and rely on retraining for new categories, LLMs are significantly larger and possess a level of "reasoning" that encoder-only models currently lack. This reasoning emerges from large-scale pretraining across exhaustive web-scale data, resulting in a world model that leverages additional context. LLMs can interpret and generate hierarchical categorizations based on context and demonstrations (in-context learning), allowing them to adapt to new or uniquely defined categories on the fly. This flexibility provides the scalability needed to handle complex, changing categories, leading to more accurate and efficient solutions.</p>
+    <h2><strong>Benchmarking Against the Frontier</strong></h2>
+    <p>We compare Tickr-LLM-base and Tickr-LLM-fine-tuned against are GPT-4o, GPT-4o-mini, and Claude Sonnet 3.5. We omit OpenAI's Strawberry and Anthropic's Opus models as they do not scale in cost or time saved for any of the large-scale process automation tasks Tickr solves, like Hierarchical Product Categorization.</p>
+    <p>We focus specifically on the ability of the models to use demonstrations without any explanations of the categories. This is important because some of our clients have thousands of categories and each client’s categorization structure is unique Thus the ability to learn from examples is important for using LLMs for Hierarchical Product Categorization (and other tasks in retail and CPG).</p>
+    <h2><strong>Our Methodology</strong></h2>
+    <p>To thoroughly evaluate the models, we used four datasets with different categories and hierarchies. This amounts to hundreds of categories and thousands of subcategories. Each dataset presents unique challenges and levels of granularity, simulating the diverse and complex classification tasks our clients face daily. The data is messy and simulates the real world. This includes different categories mapping to the same product or ambiguous category decision boundaries. <em>Tickr has been given permission to run these experiments and we strive to protect our partners' and clients' data, so we will not publish or provide additional information about the data source.</em></p>
+    <p>Each model, including our own, is sent the exact same instructions (prompt). We include a template from the prompt below:</p>
+    <pre><code class="language-json">The taxonomic classification of a product is defined as a hierarchy of categories, where each category is a class. Because we are dealing with arbitrary datasets, the classes are not standardized and can be anything from a simple category to a complex taxonomy. Use the demonstrations, your knowledge of products, and your knowledge of the world to predict the products hierarchical categorization. 
+    {demonstrations}
+    </code></pre>
+    <p>Tickr-LLM-base is pre-trained on nearly one million retrieval-augmented instructions &amp; Tickr-LLM-fine-tuned represents four different Quantized Low Rank Adapters (QLoRAs) across the four datasets used for performance benchmarking. QLoRAs are a fine-tuning technique that compresses large language models by approximating their weights with low-rank matrices, significantly reducing computational costs and memory usage while maintaining high performance on new tasks. Demonstrations are found via our AI search algorithms. Their quality and the number of demonstrations effect downstream performance. </p>
+    <h2><strong>Super-frontier Performance</strong></h2>
+    <p>The high accuracy of our models demonstrate their ability to use demonstrations without additional context, as this important for the dynamism of product categorization. </p>
+    <p>Tickr AI LLMs lead with a 90.8% accuracy rate for Tickr-LLM-base &amp; 98.1% for Tickr-LLM-fine-tuned. Claude Sonnet 3.5 follows with an accuracy of 86.6%, and GPT-4o and GPT-4o-mini both achieve 86.2% &amp; 86.1%. While all models demonstrate competitive performance, Tickr LLMs consistently achieves higher accuracy across the datasets. We note that the near equivalent performance of GPT-4o &amp; GPT-4o-mini is likely due to GPT-4o-mini being distilled from GPT-4o.</p>
+    <figure><img alt="**Figure 1:** Performance of Tickr-LLM-base, Tickr-LLM-fine-tuned, and the commercial frontier models offered by OpenAI &amp; Anthropic. Performance is the average accuracy across four datasets. The dashed line marks 100% accuracy (no misclassifications)." src="../assets/img/posts/dynamic-hierarchical-categorization-tickrllm_vs_frontier.png" /><figcaption>Figure 1: Performance of Tickr-LLM-base, Tickr-LLM-fine-tuned, and the commercial frontier models offered by OpenAI &amp; Anthropic. Performance is the average accuracy across four datasets. The dashed line marks 100% accuracy (no misclassifications).</figcaption></figure>
+    <h2><strong>Closing Remarks</strong></h2>
+    <p>At Tickr AI, we strive to help our clients automate their largest inefficiencies and organizational challenges with AI, ultimately leading to significant cost and time savings. We developed Tickr-LLM-base and Tickr-LLM-finetuned to deliver state-of-the-art performance for dynamic hierarchical product categorization. These models are designed to adapt to the complexities of evolving product categories, offering reliable, scalable solutions that reduce manual effort and improve speed-to-market for CPG and retail businesses. </p>
+    <p>For more information on how Tickr AI can optimize your business, contact us at info@tickr.com.</p>
+    <a class="backlink" href="../blog.html">← all writing</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+  </footer>
+</div>
+</body>
+</html>

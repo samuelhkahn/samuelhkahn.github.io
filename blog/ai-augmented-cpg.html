@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI-Augmented CPG, Part 1: What to Think About When Adopting AI, Samuel Kahn</title>
+<meta name="description" content="Four things to settle before expanding investment in generative AI.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink active" href="../blog.html">writing</a>
+    <a class="navlink" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>The AI-Augmented CPG, Part 1: What to Think About When Adopting AI</h1>
+    <p class="post-meta">Strategy · Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> Originally published on the
+      <a href="https://www.tickr.com/blog/posts/the-ai-augmented-cpg-part-1-what-to-think-about-when-adopting-ai/">Tickr engineering blog</a> and reproduced here as part of my portfolio.
+      Figures and results are from work carried out at Tickr.
+    </div>
+    <p>Imagine an AI at the heart of a CPG’s operations, analyzing vast amounts of market data, consumer trends, and sales forecasts. With its deep understanding of market dynamics, this AI can predict future trends and devise promotional strategies that are both innovative and effective. Retailers receive intelligent recommendations from this system, suggesting optimal pricing strategies and stock levels, tailored to real-time market conditions. The system continuously learns and adapts, making data-driven decisions to maximize efficiency and profitability, while also ensuring that product offerings remain relevant and appealing to consumers. We believe empowering CPGs to be 'self-driving’ like this, integrating generative AI and data science, will lead to transformational efficiency and execution.</p>
+    <p>However, when working with commercial models from OpenAI and Anthropic, or open models from Mistral AI and Meta, it's crucial to have a clear roadmap, a deep understanding of the challenges and opportunities with deployment, and reliable partners to guide you along the way. At Tickr, we understand that deploying Generative AI in a CPG context isn't just about leveraging the technology, it's about doing so effectively and responsibly. To this end, it’s important to understand the nuances involved in implementing production-grade Generative AI and Data Science. This encompasses a range of critical considerations, from data sourcing and security to the specific AI models that best suit your needs.</p>
+    <p>Whether your goal is to develop a platform for AI-assisted joint business planning, forecasting sales within a category, or identifying substitutable goods to maximize incrementality, here are four things Tickr believes every CPG needs to think about before expanding investments in AI.</p>
+    <p><strong>1. Generative AI vs. Data Science</strong></p>
+    <p>First, it’s important to distinguish between Generative AI and Data Science. While there is overlap in implementation and the technical skills required between the two fields, practically they serve different purposes and require distinct approaches.</p>
+    <p>Data Science generally encompasses the fields of statistics, machine learning, and time series analysis applied with an experimental mindset to surface insights and predict the future. In CPG, this includes applying data science to business planning scenarios, customer segmentation, supply chain optimization, pricing recommendations, and demand forecasting.</p>
+    <p>Generative AI, on the other hand, refers to a subset of AI focused on the generation of new content or data that abstracts real-world patterns found in the training data. The most pervasive generative AI technology, ChatGPT, is an example of a text generation model. On the other hand, a model like DALL-E is an example of a generative image model. You may hear these generative models referred to as foundational models. Foundational models are large-scale models that have been pre-trained on a massive amount of data that can easily be used for a wide variety of use cases.</p>
+    <p>From a technical perspective, maybe the most important difference between generative AI models and “classical” machine learning models (Tickr’s term) is that assets are generated probabilistically. For example in the context of large language models, the text is sampled from an autoregressive probability distribution. This is why when you prompt ChatGPT with the same prompt multiple times, you get different responses (as long as the “temperature” setting is greater than zero).</p>
+    <p>For CPGs, some ways Generative AI can be transformative are:</p>
+    <ul>
+    <li><strong>Retrieval Augmented Generation</strong>: While generative AI excels in interacting with unstructured data such as text files, it can often add the most value by extracting insights from structured data, like POS data in a SQL database. This means that with a chat interface you can accurately answer questions like “What is my share of category sales and what are the top 3 brands that are cannibalizing my brand?”. This is achieved by an LLM recognizing it needs to query external data sources to answer a question rather than use its own knowledge.</li>
+    <li><strong>Explainable Forecasting (XF)</strong>: Large language models can be used to interact with machine learning and time series models to explain the “why” behind AI-driven forecasts. At Tickr we call this explainable forecasting (XF).</li>
+    <li><strong>Joint Business Planning</strong>: Large language models combined with Tickr’s XF capabilities can assist CPGs, brokers, and retailers in quantifying business goals. For example, Tickr’s AI can produce accurate and meaningful explanations for why a retailer should take a specific price change.</li>
+    <li><strong>AI Assistants:</strong> Text-based Generative AI models, acting as digital assistants, enhance the productivity of knowledge workers in CPG companies. These AI assistants can analyze large volumes of data, provide rapid insights, draft reports, and even offer strategic recommendations. This streamlining of workflows lays the groundwork to help people focus on more complex decisions and is an order of magnitude more efficient by handling tedious, time-consuming tasks. See our <a href="https://www.tickr.com/blog/posts/transformational-efficiencies-tickr-ai-vs-cpg-human-expert/">blog post</a> on a blinded experiment we ran to understand the transformational efficiencies and gains that can be leveraged by CPGs using generative AI.</li>
+    </ul>
+    <p>The above list is not exhaustive, but the efficiencies should be clear. At Tickr we believe generative AI and data science should be integrated, empowering a broker, CPG, or retailer to have state-of-the-art data science and machine learning through a chat interface.</p>
+    <p><strong>2. The Nuance of the Data Providers</strong></p>
+    <p>Understanding the complexities of data providers is critical for CPGs seeking to harness the power of Generative AI and Data Science. Data providers can vary greatly in the scope of data they collect, the industries they serve, their method(s) of collection, granularity of data, and, maybe most importantly, their stance on issues such as privacy and security.</p>
+    <p>One major distinction in the world of data providers is the difference between retailer-specific and non-retailer-specific sources. Numerator, for example, offers insights that are not tied to any one retailer, providing a bird's eye view of the consumer market, including shopper behaviors and brand affinities across multiple retail environments. This can lead to a more comprehensive understanding of the market and enhance the AI's ability to generate actionable broad insights.</p>
+    <p>In contrast, a data provider like 84.51° is affiliated with a specific retailer, in this case, Kroger. The data is deep and rich when analyzing consumer behavior within that specific retailer's environment, offering highly granular data advantages for decision-making and strategy for a CPG’s business at Kroger. However, insights from these data may not represent consumer behavior outside that specific retailer, which can be crucial for certain types of insights.</p>
+    <p>Data granularity is also very important to consider when selected data providers. For example, while syndicated sources like NIQ (NielsenIQ) or Circana (IRI) deliver only weekly data updates, they are highly granular in other ways: geographic stratification, extensive product attributes and hierarchies, GTIN-level detail, causal factors, sales channels, and the ability for customization.</p>
+    <p>The choice of data partner goes beyond just the type and granularity of data, they also differ in their positions on critical aspects like privacy, security, masking, and the ethical use of AI:</p>
+    <ul>
+    <li>Providers like Numerator can share their data with retailers without masking because they base their business on relationships with shoppers, rather than retail partnerships.</li>
+    <li>Retailer-specific data providers possess highly detailed shopper data tied to loyalty programs, but that comes at the expense of multi-retailer insights and ways the data can be leveraged.</li>
+    </ul>
+    <p>Tickr has experience with both sides of this coin: data providers who are eager to squeeze all they can out of their data with AI and Data Science, and others who are understandably more protective and restrictive with how their data is used.</p>
+    <p>As Generative AI and Data Science become increasingly integrated into CPG business practices, companies need to not only assess the type and granularity of the data, but also how it can be used. The right data partner will align with the CPG’s objectives, ensuring that the AI-driven insights are not only effective but also responsibly managed.</p>
+    <p>Stay tuned for the second installment of our blog series on the future of  CPG, where we'll dive into considerations around security, data management, and selecting the ideal partner for implementing AI solutions.To learn about how Generative AI and Data Science can redefine your business, reach out to sales@tickr.com.</p>
+    <a class="backlink" href="../blog.html">← all writing</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+  </footer>
+</div>
+</body>
+</html>

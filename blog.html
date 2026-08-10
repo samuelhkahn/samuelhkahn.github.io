@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing | Samuel Kahn</title>
+<meta name="description" content="Essays by Samuel Kahn on agent infrastructure, LLM evaluation, retrieval-augmented generation, forecasting, and causal inference.">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="index.html">Samuel Kahn</a>
+    <a class="navlink" href="index.html">about</a>
+    <a class="navlink" href="experience.html">experience</a>
+    <a class="navlink active" href="blog.html">writing</a>
+    <a class="navlink" href="projects.html">projects</a>
+    <a class="navlink" href="publications.html">research</a>
+    <a class="navlink" href="beyond.html">sailing &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <h1 class="page-title">Writing</h1>
+  <p class="page-sub">Technical essays on agent infrastructure, evaluation of frontier models in
+    vertical domains, retrieval-augmented generation, forecasting, and causal inference. Most were
+    written for the Tickr engineering blog; where I could confirm the published URL, each post
+    links back to the original.</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-harness.png" alt="Risk harness architecture diagram">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Agents</div>
+        <h3><a href="blog/risk-harness.html">The Risk Harness: Agent Infrastructure for Risk Intelligence</a></h3>
+        <p>An agent is only as useful as the context it can assemble, the tools it can invoke, and
+          the constraints that govern how it acts. What it takes to turn a model into a system.</p>
+        <div class="card-meta"><span class="tag">agents</span><span class="tag">infrastructure</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-gps.png" alt="Win rate comparison chart">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Forecasting</div>
+        <h3><a href="blog/generative-predictor-search.html">Improving Forecasting Models with Large Language Models</a></h3>
+        <p>Generative Predictor Search: LLM reasoning to propose and validate covariates. 15.6%
+          average MAPE reduction, 13× faster, with logical validation of predictors.</p>
+        <div class="card-meta"><span class="tag">llm</span><span class="tag">time series</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-riskwise.png" alt="Risk index with uncertainty envelope">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Risk</div>
+        <h3><a href="blog/seeing-risk-clearly.html">Seeing Risk Clearly: Moving Past Emotion to Measure Risk Exposure</a></h3>
+        <p>Why sentiment is a poor proxy for exposure, and what an event-linked risk index looks
+          like instead.</p>
+        <div class="card-meta"><span class="tag">risk</span><span class="tag">measurement</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-frontier-index.png" alt="Frontier model versus index comparison">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Evaluation</div>
+        <h3><a href="blog/riskwise-vs-frontier.html">RiskWise and Frontier AI: Rethinking How Emerging Risk Is Measured</a></h3>
+        <p>Frontier models generate risk indices quickly, but reliable measurement needs
+          transparent, event-linked signals. A head-to-head.</p>
+        <div class="card-meta"><span class="tag">evals</span><span class="tag">risk</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-categorization.png" alt="Benchmark comparison chart">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Evaluation</div>
+        <h3><a href="blog/dynamic-hierarchical-categorization.html">Surpassing Frontier AI for CPG &amp; Retail</a></h3>
+        <p>Dynamic hierarchical product categorization: a domain-tuned system beating OpenAI and
+          Anthropic, at 100–1,000× human speed.</p>
+        <div class="card-meta"><span class="tag">evals</span><span class="tag">fine-tuning</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-rag.png" alt="Kernel density plot of MMR scores">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Retrieval</div>
+        <h3><a href="blog/rag-cold-start.html">Cold Start &amp; Tuning for Retrieval Augmented Generation</a></h3>
+        <p>How to tune a RAG system when you have no labelled data yet: chunking, retrieval
+          parameters, and the MMR diversity trade-off.</p>
+        <div class="card-meta"><span class="tag">rag</span><span class="tag">retrieval</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-marketing.png" alt="Causal impact of a marketing campaign">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Causal inference</div>
+        <h3><a href="blog/marketing-causal-impact.html">Predicting the Impact of Marketing Campaigns with AI</a></h3>
+        <p>Year-over-year comparison is the wrong tool when the data-generating process isn't
+          constant. Building a counterfactual instead. (Basis for a US patent application.)</p>
+        <div class="card-meta"><span class="tag">causal</span><span class="tag">time series</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-cpg.png" alt="Four considerations for CPG AI adoption">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Strategy</div>
+        <h3><a href="blog/ai-augmented-cpg.html">The AI-Augmented CPG, Part 1: What to Think About When Adopting AI</a></h3>
+        <p>Four things to settle before expanding investment in generative AI: data sourcing,
+          security, model selection, and evaluation.</p>
+        <div class="card-meta"><span class="tag">strategy</span><span class="tag">deployment</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+  </footer>
+
+</div>
+</body>
+</html>

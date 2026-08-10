@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Discovery for Climate Science | Samuel Kahn</title>
+<meta name="description" content="An autonomous AI scientist that ran 19 cycles of hypothesis generation, experiment design, adversarial self-checking and theory refinement on 25 years of CERES satellite data.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink" href="../blog.html">writing</a>
+    <a class="navlink active" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>Agentic Discovery for Climate Science</h1>
+    <p class="post-meta">Research system · UC Santa Cruz · 2026</p>
+
+    <p>An autonomous AI scientist, architecturally inspired by
+      <a href="https://arxiv.org/abs/2511.02824">Kosmos</a>, pointed at a question I had
+      already worked on as a human co-author: what maintains the stability and hemispheric
+      symmetry of Earth's top-of-atmosphere albedo?</p>
+
+    <p>The setup makes this a fair test of autonomous discovery rather than a demo. The
+      <a href="https://www.nature.com/articles/s43247-026-03817-0">Communications Earth &amp;
+      Environment paper</a> established the hypotheses and the methods already tried. The system
+      was given the same data and explicitly forbidden from re-treading that ground; its
+      <code>prior_work.yaml</code> encodes what the paper had already done. Everything it found had
+      to come from methods the original analysis never used.</p>
+
+    <p>Over 19 cycles it ran 49 analyses across 12 novel methodologies on CERES EBAF-TOA Ed4.2.1
+      (25 years of satellite observations, 14.3 million rows) and produced 21 findings that
+      survived adversarial review.</p>
+
+    <h2>How the loop works</h2>
+
+    <p>Each cycle: read the current world model, let Monte Carlo Tree Search over the
+      method × hypothesis coverage matrix recommend the next experiment, write a self-contained
+      analysis script, run it, and then, before anything is allowed into the record, attack it.</p>
+
+    <p>The adversarial gate is the part I care most about. A result is only recorded if it
+      survives three mandatory checks:</p>
+
+    <ul>
+      <li><strong>Shuffle test.</strong> Re-run on permuted data. If the finding persists on
+        noise, it was trivially true and is discarded.</li>
+      <li><strong>Confound test.</strong> Residualize against Niño 3.4 and strip the seasonal
+        cycle more aggressively. If the effect vanishes, it was a confound.</li>
+      <li><strong>Robustness test.</strong> 500× bootstrap with a 95% CI excluding zero,
+        split-half across 2000–2012 vs 2013–2025, or parameter sweeps. Fragile results are
+        dropped.</li>
+    </ul>
+
+    <p>Failed experiments are still written to the world model, because the system needs to know what
+      it has already ruled out, and a method that fails on one hypothesis often gets redirected
+      to another. Four of the 19 cycles were purely adversarial, spent attacking findings the
+      system had previously recorded rather than generating new ones.</p>
+
+    <h2>What it found</h2>
+
+    <figure>
+      <img src="../assets/img/agentic/network-full.png"
+           alt="Albedo climate network showing 1,720 edges with degree centrality concentrated in the tropical Pacific">
+      <figcaption>Climate network over gridded albedo anomalies. 1,720 edges survive Bonferroni
+        correction, 161 of them cross-hemispheric. Every top hub region falls in the tropical
+        Pacific (5°S–5°N, 105°E–195°E).</figcaption>
+    </figure>
+
+    <p><strong>ENSO mediates hemispheric coupling.</strong> Six independent methods converged on
+      the tropical Pacific as a communication hub between hemispheres. Transfer entropy shows
+      SH→NH information flow dominant at 3–6 month lags (TE = 0.274, p &lt; 0.001, z = 6.92),
+      surviving phase-randomized surrogates. Wavelet coherence localises the coupling to the
+      ENSO band, 24–60 months, with SH leading NH by roughly four months. Conditioning on ENSO
+      phase shows the coupling activates during La Niña and is not significant during El Niño.
+      Five of six methods survive Bonferroni correction; final confidence 0.90.</p>
+
+    <figure>
+      <img src="../assets/img/agentic/ccm.png"
+           alt="Convergent cross mapping showing cloud to albedo convergence but not the reverse">
+      <figcaption>Convergent cross mapping. Cloud→albedo converges (ρ: 0.29→0.48, p = 0.001);
+        albedo→cloud does not (p = 0.075).</figcaption>
+    </figure>
+
+    <p><strong>Cloud→albedo causality is one-way.</strong> This is the finding that most
+      interested me, because it corrected an intermediate result the system itself had produced.
+      An adversarial cycle found that after removing the ENSO signal, linear Granger causality
+      appeared bidirectional, which would have undercut the cloud buffering hypothesis. Nonlinear
+      convergent cross mapping resolved it: clouds respond to ENSO, which creates the appearance
+      of bidirectional linear coupling, but the cloud→albedo causal pathway is genuinely
+      unidirectional. Consistent in both hemispheres, and the relationship never reverses across
+      241 rolling five-year windows.</p>
+
+    <figure>
+      <img src="../assets/img/agentic/attractor.png"
+           alt="Attractor reconstruction of albedo dynamics">
+      <figcaption>Attractor reconstruction. Albedo dynamics sit on a roughly two-dimensional
+        attractor, but attributing that to specific invariant Earth-system properties proved
+        inconclusive.</figcaption>
+    </figure>
+
+    <p><strong>The system reported its own failure.</strong> The invariant-properties hypothesis
+      finished at confidence 0.50: inconclusive, with one solid supporting result, two
+      invalidated, and one actively refuting. It did not resolve this into a clean story. That
+      restraint is the behaviour I most wanted from the design; an agent that converges on a
+      tidy conclusion regardless of evidence is worse than useless in a scientific setting.</p>
+
+    <h2>Synthesis</h2>
+
+    <p>The three hypotheses resolved into complementary parts of one mechanism: Earth's geometry
+      sets an approximately two-dimensional attractor envelope, clouds causally maintain albedo
+      within it, and ENSO coordinates cloud fields across hemispheres to preserve symmetry.</p>
+
+    <h2>Notes on what this does and doesn't show</h2>
+
+    <p>These findings are the output of an autonomous system, not a peer-reviewed result. They
+      have not been through external review, and the adversarial checks, while real, are
+      checks the system applies to itself. I'd treat the ENSO teleconnection result as the most
+      solid (six independent methods, five surviving Bonferroni) and the invariant-properties
+      conclusion as genuinely open.</p>
+
+    <p>What I take from it is less about albedo than about architecture: MCTS-guided experiment
+      selection plus a hard adversarial gate produces a system that discards most of what it
+      generates, and the discarding is where the value is.</p>
+
+    <div class="badges" style="margin-top:32px">
+      <a class="badge" href="https://www.nature.com/articles/s43247-026-03817-0">related paper</a>
+      <a class="badge quiet" href="https://arxiv.org/abs/2511.02824">Kosmos architecture</a>
+    </div>
+
+    <a class="backlink" href="../projects.html">← all projects</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+  </footer>
+</div>
+</body>
+</html>

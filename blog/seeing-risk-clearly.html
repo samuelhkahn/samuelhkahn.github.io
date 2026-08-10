@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seeing Risk Clearly: How RiskWise AI Moves Past Emotion to Measure Risk Exposure, Samuel Kahn</title>
+<meta name="description" content="Sentiment is a poor proxy for exposure. What an event-linked risk index looks like instead.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink active" href="../blog.html">writing</a>
+    <a class="navlink" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>Seeing Risk Clearly: How RiskWise AI Moves Past Emotion to Measure Risk Exposure</h1>
+    <p class="post-meta">Risk · Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> This essay was written for the Tickr engineering blog and is
+      reproduced here as part of my portfolio. Figures and results are from work carried out at
+      Tickr.
+    </div>
+    <blockquote>
+    <p>“Risk comes from not knowing what you’re doing.”</p>
+    <p>,  Warren Buffett
+    </p>
+    </blockquote>
+    <hr />
+    <h2>Introduction</h2>
+    <p>Materialized risk begins as a faint signal. Before lawsuits, recalls, or brand switching occur, traces of exposure ripple across news, legal filings, academic journal, forums, social media, and more. Some are like finding a needle in a haystack, others more obvious, but all are useless unless we isolate the right primitive: one that captures evidence of exposure rather than emotion. At RiskWise AI, we call this <em>primitive perceived risk</em>.</p>
+    <p>We formalize perceived risk as a risk driver, data channel, and entity-aware evidence measure, where a <em>risk driver</em> represents the underlying mechanism through which exposure occurs. For instance, within the broader risk of <em>Ultra-Processed Foods</em>, risk drivers may include mechanisms such as <em>carcinogenicity</em>, <em>mental-health impact</em>, and <em>regulatory scrutiny,</em> each reflecting a distinct pathway through which exposure manifests. **Measuring perceived risk at scale has only become practical with modern AI. More specifically, RiskWise’s proprietary AI search, large language models, and agents allow for very accurate measurement of perceived risk while generalizing to new risk topics and risk drivers. At scale, RiskWise uncovers a latent, directional structure in public discourse, evidence that perceived risk behaves as a coherent, actionable signal rather than mere emotional tone, such as sentiment. </p>
+    <p>The sections that follow outline the mathematical foundations behind large-scale perceived-risk detection while demonstrating, both empirically and qualitatively, why perceived risk captures a fundamentally different dimension of language than sentiment.</p>
+    <hr />
+    <h2>1. Perceived Risk: Mechanism-Aligned Exposure</h2>
+    <p>Perceived risk is a risk driver conditioned signal that expresses exposure evidence about an entity, risk driver, data channel, or topic. It is strongly differentiated from aspect‑based and document‑level sentiment. <em>Most importantly, exposure evidence is detected before negative outcomes materialize e.g. litigation, recalls, or harm to brand reputation</em>. </p>
+    <p>Now let $d$ $$ be a document (post, article, filing), $e$ an entity (company, product, person), $r$ $$ a risk topic (e.g., PFAS, AI misuse), and $k$ a risk driver (e.g., toxicity, privacy, regulatory scrutiny). We define a binary indicator for “perceived risk exposure evidence present”:</p>
+    <p>$$
+    Y_{d,e,r,k}\in{0,1}
+    $$</p>
+    <p>We target the probability of exposure evidence for each driver:</p>
+    <p>$$
+    q_{d,e,r,k}\equiv\Pr\big(Y= \text{exposure} \mid d,e,r,k\big)
+    $$</p>
+    <p>By contrast, a measure like sentiment (s) is a coarse valence conditioned on $(d,e)$:</p>
+    <p>$$
+    s_{d,e} \equiv \Pr\big(Y=\text{positive}\mid d,e\big)
+    $$</p>
+    <p>commonly used as a proxy for risk in markets, but <strong>not</strong> mechanism‑aligned for exposure.</p>
+    <hr />
+    <h2>2. Perceived Risk by Stochastic Consensus</h2>
+    <p>Operationally, the RiskWise risk scoring LLMs are trained to link an exposure decision  $\hat{y}^{(j)}_{d,e,r,k}\in{0,1}$ <em>at temperature $\tau&gt;0$.</em> We aggregate multiple passes with a strict consensus:
+    **</p>
+    <p>$$
+    \hat{y}<em j="1">{d,e,r,k} = \mathbb{I}!\left( \frac{1}{n}\sum</em> = 1 \right)}^{n}\hat{y}^{(j)}_{d,e,r,k</p>
+    <p>$$</p>
+    <p>At higher sampling temperatures, the model no longer returns a single deterministic exposure evidence. Each prediction samples from the same softmax distribution parameterized by temperature $\tau$. Even at a fixed $\tau$,  we can draw from different regions of the distribution, yielding the possibility of different completions for the same input. Thus, running $n$ such passes and observing the fraction that vote “exposure” gives a Monte Carlo estimate of the model’s own internal uncertainty:</p>
+    <p>$$
+    \hat q_{d,e,r,k} = \frac{1}{n}\sum_{j=1}^{n}\hat y^{(j)}<em p__theta_y_d_e_r_k_tau_="p_\theta(y|d,e,r,k,\tau)">{d,e,r,k}
+    \approx
+    \mathbb{E}</em>[Y]</p>
+    <p>$$</p>
+    <p>Consensus or thresholding across these samples (e.g., unanimity, majority) then converts that estimate into a stable binary decision while suppressing random errors.</p>
+    <p>Under i.i.d. where $\hat{y}^{(j)}\sim \mathrm{Bernoulli}(p)$, the false‑positive probability for a negative example is $p^{n}$, which decays exponentially in $n$. In practice, the samples are weakly correlated but in RiskWise AI observe a false postivie rate near zero. </p>
+    <hr />
+    <h2>3. The Risk Exposure Rate</h2>
+    <p>In practice, we begin with a general query anchored to an entity, e.g.,  $q(e)$ = “Costco,” executed per channel $c$ and time window $t$. Note that we aggregate documents into time windows e.g. daily, weekly, etc… Let  $\mathcal{D}<em d_e_r_k="d,e,r,k">{t,c}(q(e)))$ be the retrieved documents in some time window. Detect mentions of entity $e$ in each document $d$$,$ and apply a similar risk-driver linking methodology from section 2 to obtain  $\hat{y}</em>$ :</p>
+    <ul>
+    <li>
+    <p><strong>Total entity mentions</strong> in $(t,c)$:</p>
+    <p>$$
+    N_{t,e,c} = \sum_{d\in \mathcal{D}_{t,c}(q(e))} \mathbb{I}!\left( \text{mention}(d,e) \right)</p>
+    <p>$$</p>
+    </li>
+    <li>
+    <p><strong>Risk‑linked mentions</strong> for topic (r) and driver (k):</p>
+    <p>$$
+    R_{t,e,r,k,c}=\sum_{d\in \mathcal{D}<em d_e_r_k="d,e,r,k">{t,c}(q(e))} \mathbb{I}!\left( \text{mention}(d,e) \right)\cdot \hat{y}</em>
+    $$</p>
+    </li>
+    </ul>
+    <p>Thus an entities <strong>risk rate</strong> is:</p>
+    <p>$$
+    \rho_{t,e,r,k,c}=\frac{R_{t,e,r,k,c}}{N_{t,e,c}}\in[0,1]
+    $$</p>
+    <p>In the context of the entity Costco, the risk rate measures the number of risk‑linked Costco entity mentions for topic $r$, risk-driver $k$, and data channel $c$ normalized by the background count for $(t,e,c)$ . We can then construct a driver panel:</p>
+    <p>$$
+    \mathbf{x}<em t_e_r_k_c="t,e,r,k,c">{t}(e,r) =\big[\rho</em> \in [0,1]^p\qquad
+    $$}\big]_{k\in\mathcal{K}_r,c\in\mathcal{C}</p>
+    <p>where each element represents the rate of risk exposure for a specific driver–channel pair.
+    Here, $p$ corresponds to the total number of driver–channel combinations $(|\mathcal{K}_r| \times |\mathcal{C}|)$, giving a complete snapshot of the entity’s exposure profile for topic $r$ at time $t$.</p>
+    <figure><img alt="Figure 1. Coca-Cola, Driver–Channel Risk Rate Over Time for risk topic Ultra Processed Foods. Each line represents the normalized RiskWise risk rate for a specific driver–channel pair. Series are smoothed with a centered 26-week moving average." src="../assets/img/posts/seeing-risk-clearly-coke_risk_indices_26wk_risk_rate.png" /><figcaption>Figure 1. Coca-Cola: Driver–Channel Risk Rate Over Time for risk topic Ultra Processed Foods. Each line represents the normalized RiskWise risk rate for a specific driver–channel pair. Series are smoothed with a centered 26-week moving average.</figcaption></figure>
+    <p>The risk rate provides a snapshot of exposure within a specific time and channel. The driver panel clarifies the distribution of risk exposure between drivers and channels at a particular time. To observe how exposure evolves, and to make the signal usable for downstream models, we extend this formulation over time, transforming rates into an index that tracks emerging risk dynamics.</p>
+    <p>To illustrate this, in Figure 1 we show Coca-Cola’s driver–channel risk rates over time for the risk topic Ultra Processed Foods . While overall exposure rates remain low in absolute terms, the plot reveals important structure: risk associated with <em>Foods Health Harms</em> (News channel) shows a sustained upward trend, while <em>Policy Governance Debates</em> (Blogs channel) exhibits shorter, policy-driven bursts of attention. This demonstrate how the risk-rate captures the temporal structure of exposure, distinguishing between persistent risks and episodic surges tied to specific channels or risk drivers.</p>
+    <h2>4. From Rate to Index</h2>
+    <p>We then go from the risk rate to tracking emerging risk exposure for downstream applications e.g. litigation or claims forecasting. The matrix</p>
+    <p>$$
+    \mathbf{X}<em 1="1">{1:T}(e,r)=\big[\mathbf{x}</em>.
+    $$}(e,r),\cdots,\mathbf{x}_{T}(e,r)\big]\in\mathbb{R}^{p\times T</p>
+    <p>stacks the driver–channel exposure vectors over $T$ time windows for entity $e$ and topic $r$.</p>
+    <p>Each column represents the entity’s full exposure profile at a given point in time, while each row traces the temporal trajectory of a specific driver or channel.</p>
+    <p>To compress this high-dimensional panel into a structured, low-dimensional representation, we learn a mapping</p>
+    <p>$$</p>
+    <p>\phi:\mathbb{R}^{p}\rightarrow\mathbb{R}^{m}, \quad m\ll p,</p>
+    <p>$$</p>
+    <p>and compute</p>
+    <p>$$</p>
+    <p>\mathbf{z}<em t="t">{t}(e,r)=\phi\big(\mathbf{x}</em>(e,r)\big)\qquad</p>
+    <p>$$</p>
+    <p>Here, $\mathbf{z}_{t}(e,r)$ represents a <strong>latent embedding</strong> of the exposure structure for entity $e$ and topic $r$ at time $t$, obtained by transforming the full driver–channel vector  $\mathbf{x}_t(e,r)$ into a lower-dimensional space through $\phi$. We keep $\phi$ method‑agnostic. For example we can use:</p>
+    <ul>
+    <li><strong>Linear diffusion indexes</strong> when there are many drivers and they are moderately correlated</li>
+    <li><strong>Dynamic factor models</strong> when you expect smooth latent processes and want filtered real‑time estimates.</li>
+    <li><strong>Non‑linear encoders</strong> when driver interactions are plausibly multiplicative or thresholded.</li>
+    </ul>
+    <p>A normalization $\psi$ is then applied to $\mathbf{z}_{t}(e,r)$ </p>
+    <p>$$
+    R^{\mathrm{perc}}<em t="t">{t}(e,r)=\psi\big(\mathbf{z}</em>(e,r)\big)
+    $$</p>
+    <p>to make the risk indices calibrated (comparable) and scale across topics, channels, drivers, and entities. In the next section, we show both empirically and qualitatively, as alluded to in Section 1 that perceived risk and sentiment are fundamentally different measures, capturing distinct dimensions of how risk is expressed in language.</p>
+    <figure><img alt="**Figure 2. Coca-Cola, 26-week normalized perceived-risk indices.** The **Final Risk Index** (red) is the time-normalized composite derived from driver and channel specific signals; faint lines show the underlying driver indices (e.g., Ultra-Processed Foods, Supply Chain, Human Trafficking, Generative AI). Series are smoothed with a centered 26-week moving average and scaled per series to the x-axis is weekly over the past five years." src="../assets/img/posts/seeing-risk-clearly-coke_risk_indices_26wk_centered_envelope.png" /><figcaption>Figure 2. Coca-Cola: 26-week normalized perceived-risk indices. The Final Risk Index (red) is the time-normalized composite derived from driver and channel specific signals; faint lines show the underlying driver indices (e.g., Ultra-Processed Foods, Supply Chain, Human Trafficking, Generative AI). Series are smoothed with a centered 26-week moving average and scaled per series to the x-axis is weekly over the past five years.</figcaption></figure>
+    <p>As a concrete example, Figure 2 visualizes the selected indices for Coca-Cola, highlighting the composite overall risk index against its driver-level components over the past five years. While overall perceived risk has declined, certain categories such as Ultra-Processed Foods show a persistent upward trend.</p>
+    <p>This illustrates how the index framework captures both macro-level stabilization and localized increases in specific risks, providing a granular, actionable view of where emerging exposure is concentrated and where strategic attention should be focused.</p>
+    <h2>5. Mechanism-Align Perceived Risk vs. Aspect-Based Sentiment</h2>
+    <hr />
+    <h2>5.1 Perceived Risk ≠ Sentiment</h2>
+    <p>We’ve defined perceived risk as a structured signal of exposure evidence. what it means when an entity shows up in the risk stream. Here, we test how that signal relates to sentiment.</p>
+    <p>Across <strong>12,941</strong> documents, RiskWise AI flags <strong>879</strong> exposure-positive cases, roughly <strong>6.8%</strong> of the corpus. Sentiment scores, derived from OpenAI’s o3 reasoning model for aspect-based sentiment, are scored for an entity $e$ in document $d$ via stochastic consensus:</p>
+    <p>$$
+    \hat{s}<em j="1">{d,e} = \mathbb{I}!\left( \frac{1}{n}\sum</em> = 1 \right)}^{n}\hat{s}^{(j)}_{d,e</p>
+    <p>$$</p>
+    <p>We find  overwhelmingly neutral (71.5%), with 14.6% negative and 13.9% positive. Now when we focus only on exposure-positive entities, the sentiment mix shifts:</p>
+    <ul>
+    <li>39.2% negative</li>
+    <li>52.9% neutral</li>
+    <li>7.9% positive</li>
+    </ul>
+    <p>That shift is expected, risk stories often carry a negative tone, but more than half remain neutral, reflecting how exposure evidence tends to appear in procedural, factual language rather than emotionally charged writing.</p>
+    <hr />
+    <h3>5.1.1 How sentiment relates to exposure</h3>
+    <p>The heat map below shows how often exposure actually occurs within each sentiment class, essentially the conditional probability $P(y \mid s_{\mathrm{sent}})$. Each cell displays both the probability of true exposure and the underlying document count.</p>
+    <figure><img alt="Figure 3: Conditional probability of true exposure given sentiment, $(P(y \mid s_{\text{sent}})$.   Each cell shows the exposure probability with the number of documents in brackets.  " src="../assets/img/posts/seeing-risk-clearly-heatmap_Py_given_sent_clean.png" /><figcaption>Figure 3: Conditional probability of true exposure given sentiment, $(P(y \mid s_{\text{sent}})$.   Each cell shows the exposure probability with the number of documents in brackets.  </figcaption></figure>
+    <p>The relationship is immediately clear as seen in Figure 3: even when sentiment is negative, exposure occurs only 18% of the time. Neutral and positive texts are even less predictive, 5% and 4%, respectively. In other words, negative tone increases the likelihood of exposure about 2.7× compared to the base rate, but the vast majority of negative documents still contain no exposure evidence.</p>
+    <h3>5.1.2 Sentiment is a poor exposure detector</h3>
+    <p>If we use sentiment as a rule-based classifier for exposure, precision and recall remain low:</p>
+    <table>
+    <thead>
+    <tr>
+    <th>Rule-based Classifer</th>
+    <th>Precision</th>
+    <th>Recall</th>
+    <th>F1</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>$P(\hat{y}=1 \mid s_{\mathrm{sent}}=\mathrm{negative})$</td>
+    <td>0.18</td>
+    <td>0.39</td>
+    <td>0.25</td>
+    </tr>
+    <tr>
+    <td>$P(\hat{y}=1 \mid s_{\mathrm{sent}}\neq\mathrm{neutral})$</td>
+    <td>0.11</td>
+    <td>0.47</td>
+    <td>0.18</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>As we see in the table above, the rule-based classifiers pick up more exposures (higher recall) but at the cost of many false positives (low precision). In short, sentiment is a very poor predictor of exposure, even when negative. That is because perceived risk captures something fundamentally different: not mood, but mechanism<strong>,</strong> the presence of textual evidence that an entity is actually exposed to risk. </p>
+    <h2>5.2 A few examples</h2>
+    <p>Having defined how we score aspect-based sentiment, we now examine context windows where sentiment and perceived risk diverge, showing why mechanism-aligned exposure matters in risk decision making.</p>
+    <h3>A) Exposure: At Risk; Sentiment: Positive</h3>
+    <ul>
+    <li><strong>Entity:</strong> <em>Maruti Suzuki</em></li>
+    <li><strong>Driver:</strong> External Shocks</li>
+    <li><strong>Sentiment:</strong> Positive</li>
+    <li><strong>Risk Exposure:</strong> ( $\hat y = 1$ )</li>
+    <li><strong>Document Type:</strong> News</li>
+    </ul>
+    <blockquote>
+    <p>“… Motors, Bajaj Auto, and Maruti Suzuki, among others … could shut down as early as the end of May …”
+    </p>
+    </blockquote>
+    <p><strong>Why Sentiment:</strong> The broader article is framed as an industry outlook and highlights recovery measures; overall language leans optimistic<strong>.</strong> Even when the local context reads as negative, a frontier model like OpenAI o3, stochastically sampled for sentiment consensus, still cannot be used in place of driver-conditioned risk identification.</p>
+    <p><strong>Why Exposure:</strong> The entity-anchored span contains “could shut down,” a direct implication of the driver <strong>external-shocks</strong> which indicates changes in market conditions. </p>
+    <hr />
+    <h3>B) Exposure: At Risk; Sentiment: Neutral</h3>
+    <ul>
+    <li><strong>Entity:</strong> <em>OpenAI</em></li>
+    <li><strong>Driver:</strong> IP/Copyright Risks</li>
+    <li><strong>Sentiment:</strong> Neutral</li>
+    <li><strong>Risk Exposure:</strong> $\hat y = 1$</li>
+    <li><strong>Document Type:</strong> Legal Summary</li>
+    </ul>
+    <blockquote>
+    <p>“… prejudice. ECF 29. Defendant OpenAI creates and operates large language models (“LLM”) …”
+    </p>
+    </blockquote>
+    <p><strong>Why Sentiment:</strong> The text is procedural and legal in nature; it reads like a docket entry with minimal emotional language.</p>
+    <p><strong>Why Exposure:</strong> Terms like “ECF” and “Defendant” near OpenAI are litigation cues for exposure to copyright/IP litigation.  </p>
+    <hr />
+    <h3>C) Exposure: Not at Risk; Sentiment: Negative</h3>
+    <ul>
+    <li><strong>Entity:</strong> <em>Microsoft</em></li>
+    <li><strong>Driver:</strong> Human Trafficking &amp; Exploitation</li>
+    <li><strong>Sentiment:</strong> Negative</li>
+    <li><strong>Risk Exposure:</strong>  $\hat y = 0$</li>
+    <li>Document Type: Social</li>
+    </ul>
+    <blockquote>
+    <p>“and i’ve revealed how musks Starlink is powering modern slavery scam compounds in southeast Asia and how Microsoft repeatedly failed to remove explicit nonconsensual images of a startup founder for months”
+    </p>
+    </blockquote>
+    <p><strong>Why Sentiment:</strong> Words like “failed” and “explicit non-consensual” make the sentiment for Microsoft appear negative.</p>
+    <p><strong>Why Exposure:</strong> For the human trafficking &amp; exploitation risk driver, we expect driver-specific evidence pointing to the entity to indicate risk exposure. While there is negative tone and Microsoft could be exposed to other risks, there is no indication of risk exposure to human trafficking.</p>
+    <h2>Closing Remarks</h2>
+    <p>Perceived risk moves beyond language as opinion to language as evidence. By measuring where exposure signals first emerge, across the documents, channels, and drivers that form the risk signal chain, we can detect and forecast risk while it is still forming. The result is a new class of analytics: ones that tracks how risk is written into the world before it becomes news, litigation, or loss.</p>
+    <p>Stay tuned for Part 2 of this blog post, where we’ll tie our perceived risk indices to forecast actual negative outcomes, such as litigation related to a risk topic. And remember to contact <a href="mailto:sales@tickr.com">sales@tickr.com</a> if you’re interested in how you can use RiskWise AI for your risk analytics.</p>
+    <a class="backlink" href="../blog.html">← all writing</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+  </footer>
+</div>
+</body>
+</html>
