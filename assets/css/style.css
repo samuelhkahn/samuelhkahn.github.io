@@ -105,6 +105,25 @@ h2.section {
 }
 .section-rule { height: 1px; background: var(--rule); margin: 0 0 20px; }
 
+/* ---------------- jump chips ---------------- */
+
+.jump {
+  display: flex; flex-wrap: wrap; gap: 9px;
+  margin: 30px 0 4px;
+}
+.jump a {
+  font-family: var(--sans); font-size: .82rem;
+  color: var(--text-soft);
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: 5px 13px; line-height: 1;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.jump a:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: var(--accent-dim); text-decoration: none;
+}
+.cap[id] { scroll-margin-top: 84px; }
+
 /* ---------------- hero banner ---------------- */
 
 .banner {
