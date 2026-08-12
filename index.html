@@ -37,46 +37,38 @@
         <span>Research Fellow, UC Santa Cruz</span>
       </p>
 
-      <p>I lead AI strategy and execution across several organizations, often serving as their
-        public-facing technical and AI leader. I stay deeply hands-on in product AI, agentic
-        systems, and language model training and post-training, mentoring AI scientists and
-        engineers while building alongside them.</p>
+      <p class="lead">I lead AI strategy and still write the code, building agents and
+        post-training models for decisions that carry real weight.</p>
 
-      <p>Today I lead the research and technical direction of RiskWise at Tickr, a platform that
-        helps insurers and Big Four firms see which risks are turning into litigation and
-        regulatory action before they do. I joined in 2016 as its first AI hire; the team is now
-        nearly twenty, and product and engineering report to me alongside AI. The role runs the
-        full range: I set the product and model strategy, sit across the table from enterprise
-        buyers, defend the technology to their risk and procurement teams, and own the evaluation
-        and governance regulated customers require, all while still building at the center of it.</p>
+      <p>I've led AI at Tickr for nearly a decade and advise several other companies as their
+        public-facing technical and AI leader. I set strategy, mentor the scientists and engineers
+        I work with, and stay deep in the build across product AI, agents, and language-model
+        training and post-training. I also use more tokens than anyone else at the company, which
+        is either commitment or a budgeting problem, depending on who you ask.</p>
 
-      <p>I've also spent seven years as a fractional AI lead for legal-tech startups, two of them
-        since acquired, building early systems that read legal demands and draft grounded
-        objections. That work is as much legal strategy as engineering: defensibility,
-        privacy-preserving pipelines, attorney-in-the-loop review, and keeping a product
-        differentiated as general models absorb more of the task, which are the things legal
-        buyers weigh before they trust a model. The same problems have shown up across finance,
-        insurance, healthcare, and science.</p>
+      <p>As CTO and Head of AI at Tickr I lead RiskWise, a platform that helps insurers and Big
+        Four firms see which risks are turning into litigation and regulatory action before they
+        do. I joined in 2016 as its first AI hire and grew the team to nearly twenty, with product
+        and engineering now reporting to me alongside AI. I own the product and model strategy,
+        the enterprise relationships, and the evaluation and governance regulated buyers require,
+        all while still building at the center of it.</p>
 
-      <p>I set research strategy and hand real ownership to the scientists doing the work;
-        several of the results below are theirs, not mine. I still hire, stay in the code, and
-        most weeks I'm in front of enterprise clients. I also use more tokens than anyone else at
-        the company, which is either commitment or a budgeting problem, depending on who you
-        ask.</p>
+      <p>The work has crossed finance, insurance, healthcare, legal, and science, but much of it
+        has been legal AI. I've spent seven years as a fractional AI lead for legal-tech startups,
+        two of them since acquired, where the hard part is as much legal strategy and defensibility
+        as it is modeling. At Subpoena Solutions that work became a product since acquired,
+        an intake system that reads subpoenas, warrants, and preservation demands,
+        classifies them against 50-state law, drafts grounded objections, and routes the uncertain
+        cases to attorney review. I've fine-tuned models on attorney-reviewed data and cut errors
+        more than half against frontier baselines on legal tasks, and mentored the engineers
+        building the self-improving agents behind it. I still do research too. As a Research Fellow
+        at UC Santa Cruz I built NEO, a generative model that sharpens telescope images, and an
+        agent that forms scientific hypotheses and then tries to disprove its own results.</p>
 
-      <p>I came to agents through data science, deep learning, and scientific research, and I
-        still do all three. At NASA Ames I used recurrent networks to forecast load on a
-        microgrid. As a Research Fellow at UC Santa Cruz I built NEO, which uses a conditional
-        generative model to sharpen telescope images, and I've been building an agent that
-        proposes scientific hypotheses, runs experiments, and tries to disprove its own results.</p>
-
-      <p>Away from AI, I'm a competitive sailor. At 14 I led a team that won an open world
-        championship and became the youngest sailor to do so, with second places at the Etchells and
-        Mumm 30 world championships and a third at the International 14 Worlds in the years since.
-        I was the youngest person ever to be first to finish the Transpacific Yacht Race, and I've
-        skippered a boat at the Olympic trials. Sailing
-        taught me what it takes to be world-class at a craft, and it taught me leadership
-        early.</p>
+      <p>Away from AI, I'm a competitive sailor. At fourteen I became the youngest person ever to
+        win an open-class world championship, and I've since been first to finish the Transpacific
+        Yacht Race and sailed for the US national team. It taught me early what world-class takes,
+        and how to lead.</p>
 
       <div class="social">
         <a href="mailto:samuelkahn@berkeley.edu">email</a>
@@ -164,7 +156,7 @@
       </div>
       <div class="card-body">
         <div class="card-kicker">Evaluation</div>
-        <h3><a href="blog/dynamic-hierarchical-categorization.html">Beating frontier models on a vertical task</a></h3>
+        <h3><a href="blog/dynamic-hierarchical-categorization.html">Beating frontier models on a vertical-specific task</a></h3>
         <p>98.1% F1 on dynamic hierarchical categorization, ahead of GPT-4o and Claude 3.5 under
           identical conditions.</p>
         <div class="card-meta"><span class="tag">evals</span><span class="tag">fine-tuning</span></div>
@@ -192,8 +184,8 @@
   <nav class="jump" aria-label="Jump to a section">
     <a href="#lead">Leadership</a>
     <a href="#agents">Agents &amp; Post-Training</a>
-    <a href="#risk">Risk Intelligence</a>
     <a href="#legal">Legal AI</a>
+    <a href="#risk">Risk Intelligence</a>
     <a href="#forecasting">Forecasting</a>
     <a href="#science">AI for Science</a>
   </nav>
@@ -243,6 +235,29 @@
       <a href="blog/dynamic-hierarchical-categorization.html">evaluation</a></p>
   </div>
 
+  <div class="cap" id="legal">
+    <h3>Legal AI</h3>
+    <p>Seven of my thirteen years in AI have been in legal. At Subpoena Solutions I built the
+      proof-of-concept of an intake system that reads subpoenas, search warrants, Section 2703(d)
+      orders, preservation demands, and emergency requests, classifies the demand, and drafts
+      grounded objections. Six LLM classifiers are grounded in 50-state law. I used DSPy and
+      MIPROv2 to improve them, then added an embedding-based normalization layer so an incorrect
+      generation could not break the downstream workflow. I've fine-tuned models on
+      attorney-reviewed legal process data and built evaluation with confidence-gated attorney
+      review, cutting errors more than 50% against frontier baselines on 20+ tasks. For
+      privacy-sensitive clients whose policies prohibit fine-tuning, I've mentored engineers
+      building self-improving agentic loops that optimize instructions rather than weights. Two
+      of the three legal-tech startups I've advised have been acquired.</p>
+    <p style="margin-top:12px">The role has been as much leadership as engineering. At Subpoena
+      Solutions my work led to a private-equity acquisition and to standing up a dedicated AI and
+      engineering team; I run weekly mentorship for that team and advise its leadership on staying
+      differentiated as general models absorb more of the work. At SpeedLegal I worked with the
+      CEO on that same question and defended the technology to investors during a contested
+      fundraise. At Joinder, since acquired by Brightflag, I built the signature-detection and
+      legal-taxonomy models the product shipped on. Across RiskWise I'm the lead architect for the
+      legal-risk features and set the direction the team builds against.</p>
+  </div>
+
   <div class="cap" id="risk">
     <h3>Risk intelligence</h3>
     <p>I lead RiskWise, an agentic risk-intelligence platform licensed by major insurers and Big
@@ -267,29 +282,6 @@
       2023, and 2024, between 16 and 32% of its top 25 ranked risks later became MDLs against a
       base rate under 1%, surfacing them 8 to 24 months early.
       <a href="blog/riskwise-vs-frontier.html">benchmarks against frontier models</a></p>
-  </div>
-
-  <div class="cap" id="legal">
-    <h3>Legal AI</h3>
-    <p>Seven of my thirteen years in AI have been in legal. At Subpoena Solutions I built the
-      proof-of-concept of an intake system that reads subpoenas, search warrants, Section 2703(d)
-      orders, preservation demands, and emergency requests, classifies the demand, and drafts
-      grounded objections. Six LLM classifiers are grounded in 50-state law. I used DSPy and
-      MIPROv2 to improve them, then added an embedding-based normalization layer so an incorrect
-      generation could not break the downstream workflow. I've fine-tuned models on
-      attorney-reviewed legal process data and built evaluation with confidence-gated attorney
-      review, cutting errors more than 50% against frontier baselines on 20+ tasks. For
-      privacy-sensitive clients whose policies prohibit fine-tuning, I've mentored engineers
-      building self-improving agentic loops that optimize instructions rather than weights. Two
-      of the three legal-tech startups I've advised have been acquired.</p>
-    <p style="margin-top:12px">The role has been as much leadership as engineering. At Subpoena
-      Solutions my work led to a private-equity acquisition and to standing up a dedicated AI and
-      engineering team; I run weekly mentorship for that team and advise its leadership on staying
-      differentiated as general models absorb more of the work. At SpeedLegal I worked with the
-      CEO on that same question and defended the technology to investors during a contested
-      fundraise. At Joinder, since acquired by Brightflag, I built the signature-detection and
-      legal-taxonomy models the product shipped on. Across RiskWise I'm the lead architect for the
-      legal-risk features and set the direction the team builds against.</p>
   </div>
 
   <div class="cap" id="forecasting">
@@ -329,7 +321,7 @@
 
   <footer>
     <div>© 2026 Samuel Kahn</div>
-    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a></div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a> &middot; <a href="mailto:sam@pumpinggradients.com">sam@pumpinggradients.com</a></div>
   </footer>
 
 </div>
