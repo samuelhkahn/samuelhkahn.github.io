@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thinking Without Thinking: How RiskWise Achieves More Accurate Risk Attribution, Samuel Kahn</title>
+<meta name="description" content="How RiskWise delivers high-precision entity-level risk attribution at scale using compact, reasoning-trained models, even with chain-of-thought suppressed.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink active" href="../blog.html">writing</a>
+    <a class="navlink" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing, photography &amp; adventures</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>Thinking Without Thinking: How RiskWise Achieves More Accurate Risk Attribution</h1>
+    <p class="post-meta">Model post-training · Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> Co-authored with Maia Kennedy and originally published in
+      <a href="https://medium.com/riskwise-ai-insights/thinking-without-thinking-how-riskwise-achieves-more-accurate-risk-attribution-37f5c34d71d7">RiskWise.ai Insights on Medium</a>,
+      reproduced here as part of my portfolio. The benchmark table and figure are in the
+      <a href="https://medium.com/riskwise-ai-insights/thinking-without-thinking-how-riskwise-achieves-more-accurate-risk-attribution-37f5c34d71d7">original post</a>.
+      Figures and results are from work carried out at Tickr.
+    </div>
+
+    <p>Most risk intelligence systems fail the same way: they confuse what is being discussed with
+      what is actually at risk. In an environment saturated with speculation, warnings, and early
+      concern, detecting risky topics is easy. Determining whether a specific entity is
+      meaningfully exposed is not.</p>
+
+    <p>At RiskWise, we approach this problem as a reasoning task, not merely a sentiment or
+      topic-detection problem. We train small, specialized language models (under 10B parameters)
+      to scale reasoning and support agentic decision-making for detecting, measuring, and
+      predicting risk with a focus on epistemic precision.</p>
+
+    <p>A core application of this approach is entity-level perceived-risk attribution: determining
+      whether a specific company, organization, or individual is perceived to be exposed to a
+      given risk based solely on contextual evidence. This task sits at the foundation of
+      RiskWise's ability to separate weak signals from noise and convert unstructured language into
+      measurable, decision-ready risk indicators (see
+      <a href="seeing-risk-clearly.html">Seeing Risk Clearly</a>).</p>
+
+    <p>On this entity-level risk perception task, our 4B thinking-tuned model consistently
+      outperforms an equivalently sized instruction-tuned 4B model, even when we explicitly
+      suppress chain-of-thought. The improvement does not come from longer explanations or visible
+      reasoning traces, but from stronger internal reasoning representations shaped during
+      training.</p>
+
+    <p>This finding is consistent with prior research showing that chain-of-thought training
+      improves internal reasoning capabilities rather than merely increasing generation length,
+      and suggests that latent reasoning capability can persist even when reasoning traces are not
+      exposed (Wei et al., 2022; Kojima et al., 2022; Chen et al., 2024).</p>
+
+    <p>For RiskWise, this distinction is central. Measuring risk requires separating true exposure
+      from sentiment and narrative noise. Entity-level perceived risk is not about how loudly a
+      topic is discussed, but whether contextual evidence actually links an entity to potential
+      vulnerability. Models with stronger latent reasoning are better equipped to make this
+      separation, recognizing when language reflects precaution, speculation, or reputational
+      concern versus when it signals genuine exposure. By embedding reasoning into the model itself
+      rather than emitting it as text, RiskWise can perform this distinction reliably and at scale,
+      enabling more precise risk indices and earlier detection of emerging threats.</p>
+
+    <hr />
+    <h2>Risk is about epistemic status, not topic detection</h2>
+    <p>In operational settings, effective risk measurement requires distinguishing between two
+      fundamentally different signals: perceived risk, credible signals that an entity is believed
+      to be exposed (warnings, allegations, forecasts, speculation, reputational concern); and
+      actual risk, exposure that has been verified through confirmed findings, measurements, or
+      official determinations. This distinction closely aligns with classical definitions of
+      perceived risk in decision science, which emphasize uncertainty combined with potential
+      adverse outcomes rather than confirmed harm (Bauer, 1960; Slovic, 1987).</p>
+
+    <p>News and research text are saturated with epistemic language such as <em>may</em>,
+      <em>could</em>, <em>experts warn</em>, <em>under investigation</em>, and <em>more research is
+      needed</em>. Systems that treat negative sentiment or narrative tone as a proxy for risk, a
+      common approach in media-intelligence and reputation-monitoring platforms, tend to
+      over-predict exposure when uncertainty or speculation is present (see
+      <a href="seeing-risk-clearly.html">Seeing Risk Clearly</a>).</p>
+
+    <p>RiskWise is explicitly designed to avoid this failure mode. Rather than inferring risk from
+      tone alone, our models evaluate epistemic status directly, determining whether a passage
+      asserts, speculates about, or confirms exposure for a specific entity. This lets us separate
+      concern from sentiment, and uncertainty from evidence, with the precision required for
+      real-world decision-making.</p>
+
+    <hr />
+    <h2>Grounded, entity-specific risk attribution</h2>
+    <p>Each evaluation example consists of three inputs and one constrained output. The inputs are
+      an <strong>entity</strong> (the specific object for which risk exposure is being evaluated,
+      e.g. <code>GLP-1</code>); a <strong>risk driver and description</strong> (a predefined risk
+      category specifying what type of harm or exposure is being assessed, e.g. health harms from
+      ultra-processed foods, with a description covering chronic disease, inflammation, hormonal
+      disruption, and additive risks); and a <strong>context passage</strong>, a short excerpt from
+      a news article, tweet, or regulatory filing that may or may not indicate risk exposure for
+      the given entity. For example:</p>
+
+    <blockquote>
+      <p>"Experts warn that ultra-processed foods engineered to maximize fat, sugar, and salt
+      intake are contributing to rising obesity rates. While these products are increasingly
+      scrutinized, researchers note that more evidence is needed to understand long-term health
+      impacts. GLP-1 drugs are being studied for their role in regulating appetite and
+      metabolism."</p>
+    </blockquote>
+
+    <p>The model must determine whether perceived risk is present for the specified entity based
+      solely on the provided context, and return JSON only, e.g.
+      <code>{"entity":"GLP-1","label":0}</code>. A label of <code>1</code> indicates a credible
+      signal that the entity is believed to be exposed to the risk driver; <code>0</code> indicates
+      that no such signal is present in the text.</p>
+
+    <hr />
+    <h2>RiskWise models outperform on entity-level risk attribution</h2>
+    <p>We evaluate all models on the same entity-level perceived-risk classification benchmark,
+      consisting of 990 examples (648 negative, 342 positive). Each model is tested under identical
+      conditions: the same prompts, entity and risk-driver definitions, the same context passages,
+      and JSON-only outputs. Evaluation conditions are held constant across models: deterministic
+      decoding at temperature 0, identical post-processing and scoring, and strict structured
+      output constraints where a failure to parse defaults to no exposure. For thinking-capable
+      models we evaluate two modes: <em>No Thinking</em>, explicitly suppressing chain-of-thought
+      output while preserving the model's reasoning mode via meta tags such as
+      <code>&lt;think&gt;</code> tokens; and <em>Thinking</em>, a constrained reasoning prompt that
+      allows limited sequential reasoning before the final JSON output.</p>
+
+    <figure>
+      <img src="../assets/img/blog-thinking.png" alt="Accuracy, macro F1, and exposed-class F1 for RiskWise-4B ahead of GPT-5.2, GPT-4o, and GPT-4o-mini">
+      <figcaption>Accuracy, macro F1, and exposed-class F1 on the 990-example benchmark. RiskWise
+        scores are with chain-of-thought suppressed; GPT-5.2 is shown at its best setting. The full
+        table, including every reasoning setting, is below.</figcaption>
+    </figure>
+
+    <table>
+      <thead>
+        <tr><th>Model</th><th>CoT setting</th><th>Accuracy</th><th>Macro F1</th><th>Exposed Class F1</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>RiskWise-4B-Thinking</strong></td><td><strong>No Thinking</strong></td><td><strong>0.97</strong></td><td><strong>0.96</strong></td><td><strong>0.95</strong></td></tr>
+        <tr><td>RiskWise-4B-Thinking</td><td>Thinking</td><td>0.96</td><td>0.96</td><td>0.95</td></tr>
+        <tr><td>RiskWise-4B-Instruct</td><td>No Thinking</td><td>0.95</td><td>0.95</td><td>0.93</td></tr>
+        <tr><td>GPT-5.2</td><td>Medium Thinking</td><td>0.94</td><td>0.93</td><td>0.91</td></tr>
+        <tr><td>GPT-5.2</td><td>High Thinking</td><td>0.93</td><td>0.93</td><td>0.91</td></tr>
+        <tr><td>GPT-5.2</td><td>Low Thinking</td><td>0.92</td><td>0.92</td><td>0.91</td></tr>
+        <tr><td>GPT-5.2</td><td>No Thinking</td><td>0.90</td><td>0.89</td><td>0.87</td></tr>
+        <tr><td>Qwen-4B-Thinking</td><td>No Thinking</td><td>0.85</td><td>0.83</td><td>0.76</td></tr>
+        <tr><td>GPT-4o</td><td>No Thinking</td><td>0.81</td><td>0.81</td><td>0.78</td></tr>
+        <tr><td>Qwen-4B-Thinking</td><td>Thinking</td><td>0.66</td><td>0.43</td><td>0.06</td></tr>
+        <tr><td>Qwen-4B-Instruct-2507</td><td>No Thinking</td><td>0.63</td><td>0.63</td><td>0.65</td></tr>
+        <tr><td>GPT-4o-mini</td><td>No Thinking</td><td>0.47</td><td>0.44</td><td>0.56</td></tr>
+      </tbody>
+    </table>
+    <p class="post-meta" style="margin-top:6px">Table 1. Perceived-risk attribution, 990 examples
+      (648 negative, 342 positive).</p>
+
+    <p>The results:</p>
+    <ul>
+      <li>RiskWise-4B-Thinking outperforms RiskWise-4B-Instruct across all reported metrics,
+        including accuracy, macro F1, and Class-1 F1.</li>
+      <li>Performance gains persist when chain-of-thought is explicitly suppressed, indicating that
+        the improvements are not driven by emitted reasoning text.</li>
+      <li>Allowing chain-of-thought recovers most of the gains of a thinking model with
+        chain-of-thought suppressed, suggesting diminishing returns from additional reasoning
+        verbosity.</li>
+      <li>Improvements are concentrated on the minority and operationally highest-cost class.</li>
+      <li>Accuracy improves from 0.95 to 0.97, roughly a 40% relative reduction in error rate.</li>
+      <li>Compared to frontier models, RiskWise-4B-Thinking (both thinking and no-thinking modes)
+        and RiskWise-4B-Instruct exceed GPT-5.2 across all metrics, and match or outperform GPT-5.2
+        even with high reasoning enabled, evidence that targeted internal reasoning training can
+        outperform scale-plus-reasoning approaches.</li>
+      <li>General-purpose instruction models such as GPT-4o and GPT-4o-mini underperform
+        substantially (0.81 and 0.47 accuracy), reinforcing that entity-level perceived-risk
+        attribution requires domain-aligned reasoning rather than generic instruction tuning.</li>
+    </ul>
+
+    <hr />
+    <h2>Why "thinking" helps, even when you hide the thinking</h2>
+    <p>This result follows directly from how the models were trained, without requiring speculation
+      about internal mechanisms.</p>
+
+    <p><strong>Chain-of-thought is a training signal, not just an output style.</strong>
+      Chain-of-thought prompting has been shown to significantly improve performance on multi-step
+      reasoning tasks by encouraging decomposition and intermediate state tracking (Wei et al.,
+      2022), and follow-up work demonstrated that even minimal reasoning cues can activate these
+      benefits (Kojima et al., 2022). Critically, that line of research does not claim the textual
+      output of the chain-of-thought is the source of the improvement. Rather, models trained or
+      prompted to reason step-by-step develop stronger internal representations that generalize
+      beyond the presence of visible reasoning traces. Our findings extend this insight to
+      operational risk attribution: models retain these gains even when chain-of-thought is
+      suppressed at inference time.</p>
+
+    <p><strong>Internal reasoning can persist without verbalization.</strong> Recent work has
+      explicitly examined latent or silent reasoning, where intermediate computation occurs without
+      being emitted as natural-language text (Chen et al., 2024; Jiang et al., 2024). Related
+      approaches, such as token-wise reasoning, reinforce the distinction between internal
+      computation and emitted explanation by showing that structured reasoning can be distributed
+      across token representations rather than serialized as explicit chains of thought. Consistent
+      with these findings, we observe that a thinking-tuned model outperforms an equivalently sized
+      instruction-tuned model even when chain-of-thought output is explicitly suppressed. This does
+      not prove a specific internal mechanism, but it is empirical evidence that the benefits of
+      reasoning-focused training can persist independently of visible reasoning traces.</p>
+
+    <p><strong>Perceived-risk attribution rewards epistemic bookkeeping.</strong> Perceived-risk
+      classification requires the model to internally track a structured set of epistemic states:
+      who is making a claim, what is asserted versus speculated, whether the assertion attaches to
+      the entity, and whether it is supported by verification or evidence. These are not
+      surface-level pattern matches. They are intermediate checks that chain-of-thought training
+      reinforces, even when those checks are never emitted as text.</p>
+
+    <hr />
+    <h2>Additional benefits of "thinking without thinking"</h2>
+    <p>There are both practical and scientific reasons to suppress emitted reasoning text in
+      production-grade risk systems. On <strong>faithfulness</strong>, emitted chain-of-thought
+      explanations are not guaranteed to faithfully reflect a model's internal computation; in many
+      cases they function as post-hoc rationalizations rather than true explanations of the
+      decision process (Barez et al., 2023), so treating them as ground truth can introduce false
+      confidence rather than transparency. On <strong>latency and cost</strong>, generating
+      reasoning text materially increases token usage and inference latency without improving
+      downstream utility in structured decision pipelines; in practice, models can over-reason,
+      producing verbose intermediate text that far exceeds the token budget required for the final
+      decision. On <strong>automation and reliability</strong>, operational risk systems require
+      deterministic, machine-parseable outputs, and free-form reasoning text introduces
+      unnecessary variability that can make parsing errors more likely.</p>
+
+    <hr />
+    <h2>Takeaways</h2>
+    <p>Risk attribution is fundamentally an epistemic reasoning problem, not a topic-matching task.
+      It requires models to interpret uncertainty, attribution, and scope, distinguishing
+      speculation from assertion and concern from exposure, rather than simply detecting the
+      presence of risky language.</p>
+
+    <p>Our results show that reasoning-oriented training can meaningfully improve performance even
+      when reasoning is not explicitly exposed, indicating that the benefits of such training are
+      not tied to output verbosity. In this setting, small, specialized open models can match or
+      outperform larger frontier systems on narrow, high-precision tasks when trained with the
+      appropriate inductive biases. "Thinking without thinking" is therefore not a paradox: it
+      reflects latent reasoning capacity shaped by supervision, embedded within the model itself
+      rather than expressed through emitted chains of thought.</p>
+
+    <p>RiskWise offers high-confidence risk attribution at scale by reaching state-of-the-art
+      entity-level accuracy in a 4B-parameter model, which lets it run at a fraction of the cost
+      and latency of frontier systems. Lower marginal cost combined with higher precision yields
+      cleaner, more stable risk statistics across large volumes of heterogeneous data, improving
+      both risk measurement and the quality of downstream decisions.</p>
+
+    <h2>Citations</h2>
+    <p>Bauer, R. A. (1960). <em>Consumer behavior as risk taking.</em><br>
+      Slovic, P. (1987). Perception of risk. <em>Science.</em><br>
+      Wei, J. et al. (2022). <em>Chain-of-Thought Prompting Elicits Reasoning in Large Language
+      Models.</em><br>
+      Kojima, T. et al. (2022). <em>Large Language Models Are Zero-Shot Reasoners.</em><br>
+      Chen, X. et al. (2024). <em>Reasoning Beyond Language: Latent Chain-of-Thought
+      Reasoning.</em><br>
+      Jiang, A. et al. (2024). <em>DART: Distilling Autoregressive Reasoning to Silent
+      Thought.</em><br>
+      Barez, F. et al. (2023). <em>Chain-of-Thought Is Not Explainability.</em></p>
+
+    <a class="backlink" href="../blog.html">← all writing</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a> &middot; <a href="mailto:sam@pumpinggradients.com">sam@pumpinggradients.com</a></div>
+  </footer>
+</div>
+</body>
+</html>
