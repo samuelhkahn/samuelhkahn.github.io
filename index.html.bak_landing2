@@ -28,8 +28,7 @@
 
 <div class="wrap">
 
-  <div class="hero-head">
-    <img class="avatar" src="assets/img/portrait.jpg" alt="Samuel Kahn">
+  <section class="hero">
     <div>
       <h1>Samuel Kahn</h1>
       <p class="tagline">
@@ -37,30 +36,43 @@
         <span>Senior AI Advisor, Subpoena Solutions</span>
         <span>Research Fellow, UC Santa Cruz</span>
       </p>
+
+      <p>I lead AI strategy, build AI systems, and grow AI teams of managers and ICs. I
+        stay hands-on with post-training, agents, evaluation, and inference for high-stakes
+        decisions across legal, financial services, risk, consumer goods, and science.</p>
+
+      <div class="social">
+        <a href="mailto:samuelkahn@berkeley.edu">email</a>
+        <a href="https://github.com/samuelhkahn">github</a>
+        <a href="https://www.linkedin.com/in/samuel-k-990a1458/">linkedin</a>
+        <a href="assets/pdf/Samuel_Kahn_CV.pdf">cv&nbsp;(pdf)</a>
+      </div>
     </div>
-  </div>
 
-  <p class="intro">I lead AI strategy, build AI systems, and grow AI teams of managers and ICs. I
-    stay hands-on with post-training, agents, evaluation, and inference for high-stakes
-    decisions across legal, financial services, risk, consumer goods, and science.</p>
-
-  <div class="social">
-    <a href="mailto:samuelkahn@berkeley.edu">email</a>
-    <a href="https://github.com/samuelhkahn">github</a>
-    <a href="https://www.linkedin.com/in/samuel-k-990a1458/">linkedin</a>
-  </div>
+    <div>
+      <img class="portrait" src="assets/img/portrait.jpg" alt="Samuel Kahn">
+      <div class="affil">
+        <div><strong>Tickr, Inc.</strong></div>
+        <div>CTO &amp; Head of AI</div>
+        <div style="margin-top:10px"><strong>Subpoena Solutions</strong></div>
+        <div>Senior AI Advisor</div>
+        <div style="margin-top:10px"><strong>UC Santa Cruz</strong></div>
+        <div>Research Fellow</div>
+        <div style="margin-top:10px">San Francisco, CA</div>
+      </div>
+    </div>
+  </section>
 
   <h2 class="section">What I do</h2>
   <div class="section-rule"></div>
 
   <div class="funcs">
-    <div class="fn"><b>Leadership.</b> <span>Build and lead AI organizations, owning strategy, product, and the client, investor, and partner relationships. For example, grew Tickr's AI and AI-engineering function from founding scientist to fifteen.</span></div>
-    <div class="fn"><b>Agents &amp; post-training.</b> <span>Post-train and adapt open-weight LLMs, build agentic systems, and keep them fast through evaluation and inference optimization. For example, a 4B model post-trained to cut errors roughly 50% versus GPT-5.2 at nearly 20&times; lower cost without sacrificing p95 latency.</span></div>
-    <div class="fn"><b>Legal AI.</b> <span>Lead legal-AI strategy, stay hands-on with the modeling, and mentor the engineers building systems that read legal process and draft grounded output. For example, raised a legal-process classifier from 78.0% to 97.6% with DSPy, MIPROv2, and Bayesian optimization.</span></div>
-    <div class="fn"><b>(Agentic) risk intelligence.</b> <span>Build agentic systems that surface latent and emerging risk from messy public and licensed data. For example, built a verifiable-reward loop that mines predictive signals, feeding a model that predicts multidistrict litigation at 0.90 held-out AUC (2025).</span></div>
-    <div class="fn"><b>Predictive modeling &amp; forecasting.</b> <span>Build forecasting and causal-inference pipelines, increasingly AI-assisted, across financial services and consumer goods. For example, Generative Predictor Search cut MAPE 15.6% at 13&times; the speed of brute-force search while mitigating spurious correlations.</span></div>
-    <div class="fn"><b>AI for science.</b> <span>Use AI, deep learning, and agents to advance scientific measurement and discovery. For example, first author on <a href="https://samuelhkahn.github.io/neo-paper/">NEO</a> (featured by <a href="https://blogs.nvidia.com/blog/ai-gpu-early-universe-astronomy/">NVIDIA</a>) and co-author on a <a href="https://www.nature.com/articles/s43247-026-03817-0">Nature Portfolio paper</a>.</span></div>
-    <div class="fn"><b>Athletics.</b> <span>Passionate about time in nature, and sometimes fiercely competitive about it. For example, the youngest open-class sailing world champion ever, two Transpacific Yacht Race wins, the US Sailing Team, and multiple world-championship podiums, all as skipper.</span></div>
+    <div class="fn"><b>Leadership.</b> <span>Grew from founding scientist to a team of more than fifteen, including managers and senior ICs; own AI strategy, product leadership, and the client-, investor-, partner-, and competitor-facing work.</span></div>
+    <div class="fn"><b>Agents &amp; post-training.</b> <span>Post-training (SFT, PEFT/QLoRA, and verifiable-reward RL), agentic systems, evaluation, and inference optimization; for example, a 4B model post-trained to cut errors roughly 50% versus GPT-5.2 at nearly 20&times; lower inference cost.</span></div>
+    <div class="fn"><b>Legal AI.</b> <span>Seven years building systems that read legal demands and draft grounded objections, two of the startups since acquired; provide hands-on technical mentorship while doing the IC work myself.</span></div>
+    <div class="fn"><b>Risk intelligence.</b> <span>Lead RiskWise, an agentic system that surfaces latent and emerging risks; its verifiable-reward agents produce signals that predict multidistrict litigation at 0.90 held-out AUC (2025).</span></div>
+    <div class="fn"><b>Predictive modeling &amp; forecasting.</b> <span>Built early AI-assisted forecasting in 2023, using RAG for covariate search (Generative Predictor Search cut MAPE 15.6% while running 13&times; faster), plus Bayesian pipelines and predictive forecasting across financial services and consumer goods.</span></div>
+    <div class="fn"><b>AI for science.</b> <span>First author on NEO, featured by NVIDIA, and co-author on a Nature Portfolio paper; now building agents for scientific discovery and deep-learning research.</span></div>
   </div>
 
   <h2 class="section">Selected work</h2>

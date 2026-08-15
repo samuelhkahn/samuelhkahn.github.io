@@ -404,3 +404,20 @@ footer a:hover { color: var(--accent); }
   .brand { font-size: 1.05rem; }
   article.post h1 { font-size: 1.8rem; }
 }
+
+/* ---------------- what-i-do list ---------------- */
+.funcs { margin: 0 0 6px; }
+.funcs .fn { padding: 11px 0; border-bottom: 1px solid var(--rule); }
+.funcs .fn:last-child { border-bottom: none; }
+.funcs .fn b { font-family: var(--serif); font-weight: 600; color: var(--text); font-size: 1rem; }
+.funcs .fn span { color: var(--text-soft); font-size: .96rem; }
+
+/* ---------------- header avatar ---------------- */
+.hero-head { display: flex; align-items: center; gap: 22px; margin: 44px 0 20px; }
+.hero-head .avatar { width: 104px; height: 104px; border-radius: 12px; object-fit: cover;
+  box-shadow: var(--shadow); background: var(--bg-soft); flex: none; }
+.hero-head h1 { font-family: var(--serif); font-size: 2.3rem; font-weight: 700;
+  margin: 0 0 6px; letter-spacing: -.01em; line-height: 1.1; }
+.hero-head .tagline { color: var(--text-soft); font-size: 1rem; margin: 0; line-height: 1.5; }
+.hero-head .tagline span { display: block; }
+p.intro { font-size: 1.06rem; color: var(--text); margin: 0 0 14px; max-width: 70ch; }

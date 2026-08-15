@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samuel Kahn</title>
+<meta name="description" content="Samuel Kahn works on agentic systems and LLMs across data science, science, legal AI, and risk intelligence. CTO and Head of AI at Tickr, Senior AI Advisor at Subpoena Solutions, Research Fellow at UC Santa Cruz.">
+<meta property="og:title" content="Samuel Kahn">
+<meta property="og:description" content="Agentic systems and LLMs across data science, science, legal AI, and risk intelligence.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="index.html">Samuel Kahn</a>
+    <a class="navlink active" href="index.html">about</a>
+    <a class="navlink" href="experience.html">experience</a>
+    <a class="navlink" href="blog.html">writing</a>
+    <a class="navlink" href="projects.html">projects</a>
+    <a class="navlink" href="publications.html">research</a>
+    <a class="navlink" href="beyond.html">sailing, photography &amp; adventures</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div>
+      <h1>Samuel Kahn</h1>
+      <p class="tagline">
+        <span>CTO &amp; Head of AI, Tickr</span>
+        <span>Senior AI Advisor, Subpoena Solutions</span>
+        <span>Research Fellow, UC Santa Cruz</span>
+      </p>
+
+      <p class="lead">I lead AI strategy and still write the code, building agents and
+        post-training models for decisions that carry real weight.</p>
+
+      <p>I've led AI at Tickr for nearly a decade and advise several other companies as their
+        public-facing technical and AI leader. I set strategy, mentor the scientists and engineers
+        I work with, and stay deep in the build across product AI, agents, and language-model
+        training and post-training. I also use more tokens than anyone else at the company, which
+        is either commitment or a budgeting problem, depending on who you ask.</p>
+
+      <p>As CTO and Head of AI at Tickr I lead RiskWise, a platform that helps insurers and Big
+        Four firms see which risks are turning into litigation and regulatory action before they
+        do. I joined in 2016 as its first AI hire and grew the team to nearly twenty, with product
+        and engineering now reporting to me alongside AI. I own the product and model strategy,
+        the enterprise relationships, and the evaluation and governance regulated buyers require,
+        all while still building at the center of it.</p>
+
+      <p>The work has crossed finance, insurance, healthcare, legal, and science, but much of it
+        has been legal AI. I've spent seven years as a fractional AI lead for legal-tech startups,
+        two of them since acquired, where the hard part is as much legal strategy and defensibility
+        as it is modeling. At Subpoena Solutions that work became a product since acquired,
+        an intake system that reads subpoenas, warrants, and preservation demands,
+        classifies them against 50-state law, drafts grounded objections, and routes the uncertain
+        cases to attorney review. I've fine-tuned models on attorney-reviewed data and cut errors
+        more than half against frontier baselines on legal tasks, and mentored the engineers
+        building the self-improving agents behind it. I still do research too. As a Research Fellow
+        at UC Santa Cruz I built NEO, a generative model that sharpens telescope images, and an
+        agent that forms scientific hypotheses and then tries to disprove its own results.</p>
+
+      <p>Away from AI, I'm a competitive sailor. At fourteen I became the youngest person ever to
+        win an open-class world championship, and I've since been first to finish the Transpacific
+        Yacht Race and sailed for the US national team. It taught me early what world-class takes,
+        and how to lead.</p>
+
+      <div class="social">
+        <a href="mailto:samuelkahn@berkeley.edu">email</a>
+        <a href="https://github.com/samuelhkahn">github</a>
+        <a href="https://www.linkedin.com/in/samuel-k-990a1458/">linkedin</a>
+        <a href="assets/pdf/Samuel_Kahn_CV.pdf">cv&nbsp;(pdf)</a>
+      </div>
+    </div>
+
+    <div>
+      <img class="portrait" src="assets/img/portrait.jpg" alt="Samuel Kahn">
+      <div class="affil">
+        <div><strong>Tickr, Inc.</strong></div>
+        <div>CTO &amp; Head of AI</div>
+        <div style="margin-top:10px"><strong>Subpoena Solutions</strong></div>
+        <div>Senior AI Advisor</div>
+        <div style="margin-top:10px"><strong>UC Santa Cruz</strong></div>
+        <div>Research Fellow</div>
+        <div style="margin-top:10px">San Francisco, CA</div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section">Selected work</h2>
+  <div class="section-rule"></div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-harness.png" alt="Risk harness architecture diagram">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Agent infrastructure</div>
+        <h3><a href="blog/risk-harness.html">The Agent Risk Harness</a></h3>
+        <p>The memory, procedures, permissions, and decision traces an agent needs before you can
+          put a real decision through it.</p>
+        <div class="card-meta"><span class="tag">agents</span><span class="tag">infrastructure</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/mdl-loop-thumb.jpg"
+             alt="Diagram of a Thompson-sampling bandit allocating research agents under a code-computed verifiable reward">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Bandit-driven agentic search and verifiable rewards</div>
+        <h3><a href="projects/mdl-litigation-prediction.html">Verifiable Rewards for Predicting Multidistrict Litigation</a></h3>
+        <p>A Thompson-sampling bandit allocates research agents under a reward computed in code,
+          feeding a discrete-time hazard model. 0.90 held-out AUC.</p>
+        <div class="card-meta"><span class="tag">bandits</span><span class="tag">verifiable rewards</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-gps.png" alt="Win rate comparison for LLM-driven forecasting">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">LLM reasoning</div>
+        <h3><a href="blog/generative-predictor-search.html">Generative Predictor Search</a></h3>
+        <p>LLM reasoning proposes and validates covariates for time-series forecasting, cutting
+          MAPE 15.6% and running 13&times; faster than exhaustive search.</p>
+        <div class="card-meta"><span class="tag">llm</span><span class="tag">forecasting</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="https://samuelhkahn.github.io/neo-paper/images/good_image_cutouts.png"
+             alt="Ground-based, space-based, and super-resolved galaxy image triplets">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Generative models</div>
+        <h3><a href="https://samuelhkahn.github.io/neo-paper/">NEO: Photometric Super-Resolution</a></h3>
+        <p>A conditional GAN that recovers measurement structure ground-based seeing destroys,
+          improving accuracy by factors of 2 to 10. Featured by NVIDIA.</p>
+        <div class="card-meta"><span class="tag">cGAN</span><span class="tag">imaging</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/blog-thinking.png" alt="Entity-level risk attribution accuracy: RiskWise-4B ahead of GPT-4o and GPT-4o-mini">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Model post-training</div>
+        <h3><a href="blog/thinking-without-thinking.html">Whispers of Latent Reasoning</a></h3>
+        <p>A 4B thinking-tuned model beats GPT-5.2 on entity-level risk attribution and keeps the
+          gains even with chain-of-thought suppressed.</p>
+        <div class="card-meta"><span class="tag">post-training</span><span class="tag">reasoning</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb-wrap">
+        <img class="card-thumb" src="assets/img/agentic-network.png"
+             alt="Albedo climate network with hubs concentrated in the tropical Pacific">
+      </div>
+      <div class="card-body">
+        <div class="card-kicker">Autonomous research</div>
+        <h3><a href="projects/agentic-discovery-climate.html">Agentic Discovery for Science</a></h3>
+        <p>19 cycles and 49 analyses on 25 years of satellite data, with every finding put
+          through an adversarial gate before it was kept.</p>
+        <div class="card-meta"><span class="tag">agents</span><span class="tag">MCTS</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section">What I do</h2>
+  <div class="section-rule"></div>
+
+  <nav class="jump" aria-label="Jump to a section">
+    <a href="#lead">Leadership</a>
+    <a href="#agents">Agents &amp; Post-Training</a>
+    <a href="#legal">Legal AI</a>
+    <a href="#risk">Risk Intelligence</a>
+    <a href="#forecasting">Forecasting</a>
+    <a href="#science">AI for Science</a>
+  </nav>
+
+  <div class="cap" id="lead">
+    <h3>Leadership</h3>
+    <p>I built and run the nearly twenty-person organization behind RiskWise: applied AI
+      scientists, ML engineers, data scientists, software engineers, and product. I started as
+      Tickr's first AI hire, grew the function from a team of one, hired most of it, and set its
+      structure. As AI became the center of the product, engineering and product were folded
+      under me alongside it, and I now own the technical direction across all three.</p>
+    <p style="margin-top:12px">The job is mostly judgment and people. Ten or more initiatives run
+      at once, and I decide which ones get the compute and the headcount. I set research strategy,
+      hire, develop and promote from within, and keep the team close to customers so they
+      understand what a failure actually costs. I carried the group through a full pivot to
+      AI-first products with the team intact, and kept it shipping the whole way.</p>
+    <p style="margin-top:12px">Outside the org chart I'm the technical face to enterprise buyers,
+      from the Fortune 10 to the Fortune 500, and I negotiate the partnerships the platform runs
+      on: data providers, labeling vendors, and model platforms including Anthropic and OpenAI.
+      I've also acted as fractional AI lead for three startups, two of which were acquired.</p>
+    <p style="margin-top:12px">I stay close enough to the technical work to lead it credibly,
+      still hiring, reviewing architecture, and getting into the code. Most of my impact, though,
+      is in setting direction and then handing over real ownership. The thirty-task deep-research
+      evaluation, for instance, was a direction I set and a scientist on the team carried end to
+      end, which is how I want it to work.</p>
+  </div>
+
+  <div class="cap" id="agents">
+    <h3>Agents, post-training, and evaluation</h3>
+    <p>Most of my hands-on work is on agent systems and post-training. I post-trained a 4B
+      risk-attribution model that cut errors roughly 50% against GPT-5.2 at nearly 20&times;
+      lower inference cost, and fine-tuned Qwen 3 with QLoRA/PEFT on eight H100s alongside
+      bge-large-en-v1.5 for retrieval, reaching 98.1% F1 across four hierarchical datasets
+      against 86.1% for GPT-4o and 86.6% for Claude 3.5 under identical conditions. I've built
+      agentic discovery using a Thompson-sampling bandit over natural-language research briefs
+      run as frontier-model search episodes, with reward computed in code rather than by the
+      model, and an MCTS-guided research system that attacks its own findings before recording
+      them. On evaluation I've stood up adversarial LLM-as-judge, capability, regression, and
+      human-gold suites for actuarial, legal, and compliance review. New production failures
+      start as capability tests and, once reliable, become regression tests, so a later model,
+      instruction, or system change cannot quietly undo them. I set the strategy for a 30-task
+      evaluation of high-stakes risk deep research and mentored the scientist who ran it; against
+      open-web retrieval it improved source traceability by 10.4 points and analytical rigor by
+      3.3.
+      <a href="blog/risk-harness.html">agent infrastructure</a> ·
+      <a href="blog/rag-cold-start.html">RAG tuning</a> ·
+      <a href="blog/dynamic-hierarchical-categorization.html">evaluation</a></p>
+  </div>
+
+  <div class="cap" id="legal">
+    <h3>Legal AI</h3>
+    <p>Seven of my thirteen years in AI have been in legal. At Subpoena Solutions I built the
+      proof-of-concept of an intake system that reads subpoenas, search warrants, Section 2703(d)
+      orders, preservation demands, and emergency requests, classifies the demand, and drafts
+      grounded objections. Six LLM classifiers are grounded in 50-state law. I used DSPy and
+      MIPROv2 to improve them, then added an embedding-based normalization layer so an incorrect
+      generation could not break the downstream workflow. I've fine-tuned models on
+      attorney-reviewed legal process data and built evaluation with confidence-gated attorney
+      review, cutting errors more than 50% against frontier baselines on 20+ tasks. For
+      privacy-sensitive clients whose policies prohibit fine-tuning, I've mentored engineers
+      building self-improving agentic loops that optimize instructions rather than weights. Two
+      of the three legal-tech startups I've advised have been acquired.</p>
+    <p style="margin-top:12px">The role has been as much leadership as engineering. At Subpoena
+      Solutions my work led to a private-equity acquisition and to standing up a dedicated AI and
+      engineering team; I run weekly mentorship for that team and advise its leadership on staying
+      differentiated as general models absorb more of the work. At SpeedLegal I worked with the
+      CEO on that same question and defended the technology to investors during a contested
+      fundraise. At Joinder, since acquired by Brightflag, I built the signature-detection and
+      legal-taxonomy models the product shipped on. Across RiskWise I'm the lead architect for the
+      legal-risk features and set the direction the team builds against.</p>
+  </div>
+
+  <div class="cap" id="risk">
+    <h3>Risk intelligence</h3>
+    <p>I lead RiskWise, an agentic risk-intelligence platform licensed by major insurers and Big
+      Four firms. It continuously monitors a catalog of tracked companies, risk topics, and
+      industries, ingesting from more than 50 licensed and public sources: LexisNexis,
+      CourtListener and RECAP, JPML dockets, SEC EDGAR, DOJ enforcement actions, FDA recalls and
+      FAERS, PubMed, news, X, and Reddit. The work is framed around legal and property-and-casualty
+      exposure, including product liability, D&amp;O, transport, antitrust, cyber, and employment
+      practices, and looks for the correlation risk, tail risk, and emerging threats that
+      conventional taxonomies miss.</p>
+    <p style="margin-top:12px">Turning that volume into signal is most of the engineering. A
+      processing pipeline disambiguates entities, filters spam, reranks passages for relevance
+      with a fine-tuned embedding model, and decomposes each risk into drivers whose movement is
+      tracked as an index over time. On top of it run analyst agents grounded in that evidence: a
+      deep-research agent that writes underwriting-grade reports with citations back to source,
+      company- and driver-level narrative summaries, and a risk search agent. Each one cites the
+      evidence it drew on so an underwriter can trace a conclusion back to the filing or article
+      behind it. The output feeds underwriting, portfolio diversification, and board risk.</p>
+    <p style="margin-top:12px">One of the predictive layers forecasts litigation. A multi-armed
+      bandit over research agents feeds a discrete-time hazard model of multidistrict-litigation
+      consolidation at 0.90 held-out AUC; backtested point-in-time on data frozen at January 2022,
+      2023, and 2024, between 16 and 32% of its top 25 ranked risks later became MDLs against a
+      base rate under 1%, surfacing them 8 to 24 months early.
+      <a href="blog/riskwise-vs-frontier.html">benchmarks against frontier models</a></p>
+  </div>
+
+  <div class="cap" id="forecasting">
+    <h3>Predictive modeling and forecasting</h3>
+    <p>A decade of demand forecasting and causal inference on CPG and retail data. I've built
+      SARIMAX and Prophet pipelines with exogenous regressors, holiday calendars, and Bayesian
+      MCMC fits, benchmarked univariate against multivariate specifications with automated
+      hyperparameter search, and run these at retailer and product-group granularity for national
+      brands. I built Generative Predictor Search over millions of economic series using
+      retrieval, reciprocal rank fusion, and LLM reranking, which cut out-of-sample MAPE 15.6%
+      and ran 13&times; faster than exhaustive search. I hold a US patent application on causal
+      inference for marketing campaign impact, and trained DeBERTa-XXL across 500+ product
+      classes with a triplet-loss embedding model that anchored a multi-million-dollar contract.
+      My work has crossed financial services, insurance, healthcare, legal, and science: for FIS
+      I worked on dynamic product categorization and applied early reasoning LLMs to Medicare
+      Advantage benefit classification.
+      <a href="blog/generative-predictor-search.html">GPS</a> ·
+      <a href="blog/marketing-causal-impact.html">causal impact</a></p>
+  </div>
+
+  <div class="cap" id="science">
+    <h3>AI for science</h3>
+    <p>I hold a research fellowship at UC Santa Cruz alongside the CTO role. I'm first author on
+      <a href="https://samuelhkahn.github.io/neo-paper/">NEO</a>, a conditional GAN that improves
+      the accuracy of physical measurements by factors of 2 to 10, with code and weights released
+      publicly and coverage in the NVIDIA blog. I'm a co-author on a
+      <a href="publications.html">Nature Portfolio paper</a>, and I built an
+      <a href="projects/agentic-discovery-climate.html">autonomous discovery system</a> that ran
+      49 analyses across 25 years of satellite data and reported one of its three hypotheses as
+      inconclusive rather than forcing a conclusion.</p>
+  </div>
+
+  <p style="margin-top:22px"><a href="projects.html">All projects &rarr;</a> &nbsp;·&nbsp;
+    <a href="blog.html">All writing &rarr;</a> &nbsp;·&nbsp;
+    <a href="publications.html">Research &rarr;</a> &nbsp;·&nbsp;
+    <a href="experience.html">Experience &rarr;</a></p>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a> &middot; <a href="mailto:sam@pumpinggradients.com">sam@pumpinggradients.com</a></div>
+  </footer>
+
+</div>
+</body>
+</html>
