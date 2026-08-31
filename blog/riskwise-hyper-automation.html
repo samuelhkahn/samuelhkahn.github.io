@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RiskWise for the Era of Hyper-Automation: Proactive Risk Intelligence at Scale, Samuel Kahn</title>
+<meta name="description" content="Why we built RiskWise: a next-generation platform that scales and automates risk analytics for the age of agents, and the emergent structure of risk it uncovers.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  article.post .dfig { width:100%; height:auto; margin:8px 0 6px; }
+  .dfig .node, .dfig .inner { fill: var(--bg-soft); stroke: var(--rule); stroke-width:1; }
+  .dfig .group { fill: transparent; stroke: var(--rule); stroke-width:1; stroke-dasharray:4 4; }
+  .dfig .band { fill: var(--bg-soft); stroke: var(--rule); stroke-width:1; }
+  .dfig .accent { fill: var(--accent-dim); stroke: var(--accent); stroke-width:1.4; }
+  .dfig .lbl { fill: var(--text); font-family: var(--sans); font-size:13px; }
+  .dfig .lbl-accent { fill: var(--accent); font-family: var(--sans); font-size:13px; font-weight:700; }
+  .dfig .sub { fill: var(--text-soft); font-family: var(--sans); }
+  .dfig .grouplbl { fill: var(--text-mute); font-family: var(--sans); font-weight:700; letter-spacing:.04em; }
+  .dfig .hdr { fill: var(--text-mute); font-family: var(--sans); font-weight:700; letter-spacing:.12em; }
+  .dfig .colrule { stroke: var(--rule); stroke-width:1; }
+  .dfig .arrow { stroke: var(--text-mute); stroke-width:1.6; fill:none; }
+  .dfig .ahfill { fill: var(--text-mute); }
+</style>
+<script src="../assets/js/site.js"></script>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink" href="../experience.html">experience</a>
+    <a class="navlink active" href="../blog.html">writing</a>
+    <a class="navlink" href="../projects.html">projects</a>
+    <a class="navlink" href="../publications.html">research</a>
+    <a class="navlink" href="../beyond.html">sailing, mountains &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">&#9790;</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>RiskWise for the Era of Hyper-Automation: Proactive Risk Intelligence at Scale</h1>
+    <p class="post-meta">Risk &middot; Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> Originally published in
+      <a href="https://medium.com/riskwise-ai-insights/riskwise-for-the-era-of-hyper-automation-proactive-risk-intelligence-at-scale-cca5bc56912f">RiskWise.ai Insights on Medium</a>
+      and reproduced here as part of my portfolio. Figures and results are from work carried out at Tickr.
+    </div>
+
+    <blockquote>
+      <p>&ldquo;At the last dim horizon, we search among ghostly errors of observations for landmarks that are
+      scarcely more substantial. The search will continue.&rdquo;</p>
+      <p>&mdash; Edwin Hubble, on observing faint, distant galaxies</p>
+    </blockquote>
+    <hr />
+
+    <h2>Risk in the era of hyper-automation</h2>
+    <p>In February 2025, Anthropic published its Economic Index, constructed from millions of anonymized
+      Claude conversations, which found that <strong>36% of occupations now use AI to perform at least 25% of
+      their tasks</strong>. Of these AI-assisted tasks, <strong>43% are fully automated</strong> and
+      <strong>57% are used to augment human work</strong>. At the same time, large language model (LLM) agents
+      are demonstrating increasingly <strong>scalable intelligence</strong>, unlocking automation in previously
+      manual workflows and raising efficiency even where a human-in-the-loop remains necessary. Gartner projects
+      that by 2027, <strong>50% of business decisions will be augmented or automated by AI agents</strong>, a
+      significant shift toward hyper-automation.</p>
+    <p>This era will fundamentally transform how organizations surface, analyze, research, and predict risk.
+      Consider the insurance industry: according to Boston Consulting Group, AI can boost efficiency in complex
+      underwriting by up to <strong>36%</strong> and improve loss ratios by <strong>3 percentage points</strong>
+      by grounding analytics in new and previously inaccessible data. This highlights the business and
+      competitive advantage of deploying advanced AI systems.</p>
+    <p>This is why we built RiskWise. RiskWise is a next-generation risk intelligence platform designed to
+      <strong>scale and automate risk analytics and research</strong>. It continually ingests heterogeneous
+      data, from news and social media to legal filings and academic research. RiskWise&rsquo;s AI systems
+      surface latent risk signals using proprietary LLMs, high-recall and high-precision search pipelines, and
+      agentic workflows. On top of these systems sits a set of proprietary time-series and econometrics
+      algorithms that construct risk indices encoding perceived and factual risk. Risk indices can compare any
+      company, product, industry, or risk to improve data-driven decision making.</p>
+
+    <figure>
+      <svg viewBox="0 0 940 470" class="dfig" role="img" aria-label="RiskWise platform architecture: data ingestion feeds AI systems, which feed data-science risk indices, all exposed through an agent interface."><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ahfill"/></marker></defs><text class="hdr" x="140" y="34" text-anchor="middle" style="font-size:12.5px">DATA INGESTION</text><line class="colrule" x1="30" y1="44" x2="250" y2="44"/><text class="hdr" x="470" y="34" text-anchor="middle" style="font-size:12.5px">AI SYSTEMS</text><line class="colrule" x1="360" y1="44" x2="580" y2="44"/><text class="hdr" x="800" y="34" text-anchor="middle" style="font-size:12.5px">DATA SCIENCE</text><line class="colrule" x1="690" y1="44" x2="910" y2="44"/><rect class="node" x="30" y="62" width="220" height="44" rx="7"/><text class="lbl" x="140" y="89" text-anchor="middle">News</text><rect class="node" x="30" y="120" width="220" height="44" rx="7"/><text class="lbl" x="140" y="147" text-anchor="middle">Social media</text><rect class="node" x="30" y="178" width="220" height="44" rx="7"/><text class="lbl" x="140" y="205" text-anchor="middle">Legal filings</text><rect class="node" x="30" y="236" width="220" height="44" rx="7"/><text class="lbl" x="140" y="263" text-anchor="middle">Academic research</text><rect class="node" x="30" y="294" width="220" height="44" rx="7"/><text class="lbl" x="140" y="321" text-anchor="middle">Regulatory filings</text><rect class="group" x="360" y="62" width="220" height="152" rx="7"/><text class="grouplbl" x="470" y="82" text-anchor="middle" style="font-size:12px">Hybrid retrieval</text><rect class="inner" x="374" y="92" width="192" height="30" rx="7"/><text class="lbl" x="470" y="112" text-anchor="middle" style="font-size:12.5px">Query Builder Agent</text><rect class="inner" x="374" y="130" width="192" height="30" rx="7"/><text class="lbl" x="470" y="150" text-anchor="middle" style="font-size:12.5px">High-recall search</text><rect class="inner" x="374" y="168" width="192" height="30" rx="7"/><text class="lbl" x="470" y="188" text-anchor="middle" style="font-size:12.5px">Reranking LLMs</text><rect class="node" x="360" y="230" width="220" height="44" rx="7"/><text class="lbl" x="470" y="257" text-anchor="middle">Driver Discovery Agent</text><rect class="node" x="360" y="286" width="220" height="44" rx="7"/><text class="lbl" x="470" y="313" text-anchor="middle">Proprietary risk LLMs</text><rect class="accent" x="690" y="62" width="220" height="52" rx="7"/><text class="lbl-accent" x="800" y="84" text-anchor="middle" style="font-size:15px">Risk indices</text><text class="sub" x="800" y="102" text-anchor="middle" style="font-size:11.5px">perceived + factual risk</text><rect class="node" x="690" y="130" width="220" height="44" rx="7"/><text class="lbl" x="800" y="157" text-anchor="middle">Time-series &amp; econometrics</text><rect class="node" x="690" y="190" width="220" height="56" rx="7"/><text class="lbl" x="800" y="213" text-anchor="middle" style="font-size:13px">Outcome linkage</text><text class="sub" x="800" y="231" text-anchor="middle" style="font-size:11.5px">litigation · recalls · losses</text><line class="arrow" x1="252" y1="200" x2="358" y2="150" marker-end="url(#ah)"/><line class="arrow" x1="582" y1="190" x2="688" y2="150" marker-end="url(#ah)"/><rect class="band" x="30" y="402" width="880" height="46" rx="7"/><text class="hdr" x="470" y="424" text-anchor="middle" style="font-size:12px">AGENT INTERFACE</text><text class="sub" x="470" y="440" text-anchor="middle" style="font-size:12px">MCP servers  ·  Agent-to-Agent (A2A) protocol</text><line class="arrow" x1="470" y1="344" x2="470" y2="400" marker-end="url(#ah)"/></svg>
+      <figcaption>Figure 1. The RiskWise platform. Heterogeneous data is ingested, grounded by a hybrid
+      retrieval pipeline, and processed by proprietary risk LLMs and discovery agents into risk indices tied to
+      real outcomes. Every layer is exposed to external agents through MCP and A2A.</figcaption>
+    </figure>
+
+    <h2>Hybrid retrieval augmented risk analytics</h2>
+    <p>When AI interacts with data, its accuracy is bounded by the quality of that underlying data. RiskWise
+      addresses this with a proprietary multi-stage AI search pipeline designed for a high signal-to-noise ratio.
+      First, we execute a high-recall search conditioned on a specific risk to retrieve a candidate set of
+      relevant documents from heterogeneous sources. Historically, inefficient human-in-the-loop workflows were
+      required to preview results, so that search breadth did not compromise downstream results and initial
+      queries were not overly broad, which drives significant downstream reranking costs. This is why we built
+      our Query Builder Agent, which systematically evaluates queries across data sources and validates coverage
+      before any costly reranking. We then deploy a series of efficient proprietary reranking LLMs that return
+      only relevant documents. Our hybrid retrieval pipeline ensures that all subsequent risk analytics and
+      research are grounded in verified, high-quality information.</p>
+
+    <h2>Risk-driver discovery</h2>
+    <p>RiskWise&rsquo;s Driver Discovery Agent finds and extracts <strong>risk drivers</strong>, the factors
+      that create or amplify risk, giving organizations clarity about why a particular issue poses a threat. For
+      instance, ultra-processed foods (UPFs) present significant concerns to both insurers and consumer packaged
+      goods companies, but what specifically makes UPFs risky?</p>
+    <p>It is the underlying drivers: links to cancer, increased cardiovascular disease, diabetes, and mental
+      health disorders. These drivers lead to tangible negative events such as financial liability, regulatory
+      scrutiny, and harm to reputation. RiskWise systematically monitors heterogeneous data channels, from
+      scientific research and regulatory filings to news and social media, to surface and quantify these risk
+      drivers. This lets our clients understand, predict, and proactively mitigate emerging threats before they
+      become costly.</p>
+
+    <h2>Flexible risk definitions</h2>
+    <p>Our clients work across diverse industries, from consumer packaged goods (CPG) to insurance, and each
+      measures risk differently. Insurers typically minimize total claim payouts; CPGs concentrate on detecting
+      emerging risks and preventing product recalls and competitive incursions; and consumer tech brands are
+      concerned about brand and product reputation. RiskWise is designed to model varying definitions of risk,
+      whether litigation, regulatory action, financial loss, or other negative business outcomes.</p>
+
+    <h2>Risk indices</h2>
+    <p>Each risk, risk driver, company, and product is quantified using indices that capture emerging risk.
+      These scores reflect changing perceived and actual risk, giving executives a real-time understanding of
+      exposure. The indices are calibrated so that a higher score indicates more risk, and they remain
+      comparable across topics. Indices can be grouped, filtered, and used as inputs to other machine-learning
+      models.</p>
+    <p>Risk indices can be tied to outcome variables such as litigation, product recalls, and other events to
+      directly measure a client&rsquo;s definition of risk, not just the perceived and factual risk captured by
+      our risk drivers.</p>
+
+    <h2>Designed for the era of agents</h2>
+    <p>RiskWise is engineered for an autonomous, agent-driven future, built on two open standards that ensure
+      seamless, secure, and future-proof multi-agent workflows:</p>
+    <ul>
+      <li><strong>Agent access.</strong> RiskWise publishes its risk signals, drivers, and analytics through
+        Model Context Protocol (MCP) servers. This standardized interface lets MCP-compatible agents securely
+        access and interact with our data in real time to solve their own risk tasks.</li>
+      <li><strong>Agent coordination.</strong> Once an agent accesses data via MCP, it can collaborate with
+        other agents using the Agent-to-Agent (A2A) protocol. Agents discover each other, use each other as
+        tools, delegate tasks, and orchestrate workflows autonomously and securely.</li>
+    </ul>
+    <p>We anticipate RiskWise itself will become an industry-standard agent tool used across autonomous and
+      augmentative risk workflows. This makes RiskWise both highly interoperable and future-ready.</p>
+
+    <h2>Risk agents</h2>
+    <p>RiskWise includes a suite of proprietary, specialized agents built on our internally curated risk
+      research dataset and evaluation framework. Based on the Deep Research Bench evaluation pipeline, including
+      the RACE and FACT metrics, our risk agents achieve state-of-the-art performance. Our static and dynamic
+      risk agents and workflows are:</p>
+    <ul>
+      <li><strong>Query Agent.</strong> Tests search queries across heterogeneous data sources to ensure
+        downstream risk analytics are grounded on the most accurate data. The first workflow in risk search.</li>
+      <li><strong>Risk Driver Extraction Agent.</strong> Extracts the underlying drivers of perceived risk that
+        could lead to negative events, through a series of iterative refinement LLMs and reasoning steps.</li>
+      <li><strong>Risk Driver Deep Dive Agent.</strong> Conducts deep research into new or evolving risks,
+        producing structured, cited, industry-standard, and actionable reports.</li>
+      <li><strong>Narrative Development, Timeline, and Emerging Trends Agent.</strong> Constructs detailed
+        chronological narratives linking risk drivers to observable events, letting organizations reconstruct
+        causal chains.</li>
+      <li><strong>Risk &amp; Mitigations Deep Summarizer.</strong> Provides executive summary views of risk
+        exposure and mitigation progress via dashboards, integrating evolving risk indices with recommended
+        actions.</li>
+      <li><strong>Risk Deep Research Agent.</strong> Lets users explore emerging risks through an interactive
+        research assistant that ingests natural-language queries and returns responses with citations to
+        external integrations and RiskWise. The superposition of our agent stack in a chat interface through
+        tool use.</li>
+    </ul>
+
+    <h2>The emergent structure of risk</h2>
+    <p>Traditional risk assessment looks at threats in isolation, so a product recall does not interact with
+      future litigation. But what we are finding with our pipeline is that risk has an underlying structure that
+      is emergent.</p>
+    <p>By modeling everything from PFAS contamination to generative-AI misuse, from ultra-processed foods to harm
+      to brand reputation, we uncover patterns that are invisible when looking at any single risk type. This
+      <strong>emergent structure of risk</strong> reveals how risks interact, amplify each other, and move
+      across data sources, risk drivers, and industries to eventually lead to negative outcomes.</p>
+
+    <figure>
+      <svg viewBox="0 0 940 430" class="dfig" role="img" aria-label="Three example causal chains where an early weak signal in one data source propagates across drivers and years into a materialized outcome."><defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ahfill"/></marker></defs><rect class="node" x="30" y="70" width="240" height="64" rx="7"/><text class="lbl" x="150.0" y="98.0" text-anchor="middle" style="font-size:12.5px">Endocrine-disruptor</text><text class="lbl" x="150.0" y="114.0" text-anchor="middle" style="font-size:12.5px">concern on social media</text><rect class="node" x="350" y="70" width="240" height="64" rx="7"/><text class="lbl" x="470.0" y="98.0" text-anchor="middle" style="font-size:12.5px">Surge in peer-reviewed</text><text class="lbl" x="470.0" y="114.0" text-anchor="middle" style="font-size:12.5px">research funding</text><rect class="accent" x="670" y="70" width="240" height="64" rx="7"/><text class="lbl-accent" x="790.0" y="98.0" text-anchor="middle" style="font-size:12.5px">Product liability</text><text class="lbl-accent" x="790.0" y="114.0" text-anchor="middle" style="font-size:12.5px">litigation</text><line class="arrow" x1="270" y1="102.0" x2="348" y2="102.0" marker-end="url(#ah2)"/><line class="arrow" x1="590" y1="102.0" x2="668" y2="102.0" marker-end="url(#ah2)"/><rect class="node" x="30" y="190" width="240" height="64" rx="7"/><text class="lbl" x="150.0" y="218.0" text-anchor="middle" style="font-size:12.5px">Brand sentiment shift on</text><text class="lbl" x="150.0" y="234.0" text-anchor="middle" style="font-size:12.5px">design forums</text><rect class="node" x="350" y="190" width="240" height="64" rx="7"/><text class="lbl" x="470.0" y="218.0" text-anchor="middle" style="font-size:12.5px">Adobe → Canva migration in</text><text class="lbl" x="470.0" y="234.0" text-anchor="middle" style="font-size:12.5px">Search Trends</text><rect class="accent" x="670" y="190" width="240" height="64" rx="7"/><text class="lbl-accent" x="790.0" y="218.0" text-anchor="middle" style="font-size:12.5px">Move visible in quarterly</text><text class="lbl-accent" x="790.0" y="234.0" text-anchor="middle" style="font-size:12.5px">earnings</text><line class="arrow" x1="270" y1="222.0" x2="348" y2="222.0" marker-end="url(#ah2)"/><line class="arrow" x1="590" y1="222.0" x2="668" y2="222.0" marker-end="url(#ah2)"/><rect class="node" x="30" y="310" width="240" height="64" rx="7"/><text class="lbl" x="150.0" y="346.0" text-anchor="middle" style="font-size:12.5px">Release of GPT-2</text><rect class="node" x="350" y="310" width="240" height="64" rx="7"/><text class="lbl" x="470.0" y="338.0" text-anchor="middle" style="font-size:12.5px">Papers on AI training</text><text class="lbl" x="470.0" y="354.0" text-anchor="middle" style="font-size:12.5px">datasets</text><rect class="accent" x="670" y="310" width="240" height="64" rx="7"/><text class="lbl-accent" x="790.0" y="338.0" text-anchor="middle" style="font-size:12.5px">Copyright litigation</text><text class="lbl-accent" x="790.0" y="354.0" text-anchor="middle" style="font-size:12.5px">against OpenAI</text><line class="arrow" x1="270" y1="342.0" x2="348" y2="342.0" marker-end="url(#ah2)"/><line class="arrow" x1="590" y1="342.0" x2="668" y2="342.0" marker-end="url(#ah2)"/><line class="colrule" x1="30" y1="400" x2="910" y2="400" marker-end="url(#ah2)"/><text class="sub" x="36" y="392" text-anchor="start" style="font-size:11.5px">earlier weak signal</text><text class="sub" x="904" y="392" text-anchor="end" style="font-size:11.5px">materialized outcome</text></svg>
+      <figcaption>Figure 2. The emergent structure of risk. A faint early signal in one data source propagates
+      across drivers and years into a materialized outcome. Each row is one of the example chains below; the
+      shaded node is where the risk finally becomes costly.</figcaption>
+    </figure>
+
+    <p>Why does this matter? Some example chains:</p>
+    <ul>
+      <li>Social-media concern about endocrine disruptors drives increased funding in peer-reviewed research,
+        which then triggers litigation years later.</li>
+      <li>Brand-sentiment shifts on design forums precede the mass migration from Adobe to Canva, first visible
+        in Google Search Trends before manifesting in quarterly earnings.</li>
+      <li>The release of GPT-2 generates academic papers on AI training datasets, which become cited evidence in
+        copyright litigation against OpenAI years later.</li>
+    </ul>
+    <p><strong>These causal chains and interactions were always there. We can now surface and understand them
+      with RiskWise AI.</strong></p>
+
+    <h2>Citations</h2>
+    <ol class="refs">
+      <li><a href="https://arxiv.org/abs/2503.04761">Anthropic Economic Index</a></li>
+      <li><a href="https://www.gartner.com/en/documents/6212687">Gartner, AI agents and business decisions</a></li>
+      <li><a href="https://www.bcg.com/publications/2025/how-insurers-can-supercharge-strategy-with-artificial-intelligence">BCG, How insurers can supercharge strategy with AI</a></li>
+      <li><a href="https://arxiv.org/abs/2501.18365">Deep Research Bench</a></li>
+      <li><a href="https://www.anthropic.com/news/model-context-protocol">Model Context Protocol (MCP)</a></li>
+      <li><a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/">Agent-to-Agent (A2A) protocol</a></li>
+      <li><a href="https://arxiv.org/abs/2506.11763">RACE and FACT metrics</a></li>
+    </ol>
+
+  </article>
+
+  <footer>
+    <div>&copy; 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a> &middot; <a href="mailto:sam@pumpinggradients.com">sam@pumpinggradients.com</a></div>
+  </footer>
+
+</div>
+</body>
+</html>
