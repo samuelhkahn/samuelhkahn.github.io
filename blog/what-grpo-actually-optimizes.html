@@ -74,7 +74,7 @@
     <div class="eq">L(θ) = − (1/T) Σ<sub>i</sub> Â<sub>i</sub> Σ<sub>t</sub> log π<sub>θ</sub>(c<sub>i,t</sub> | x, c<sub>i,&lt;t</sub>)</div>
     <p>The intuition is that GRPO learns only from contrast between siblings. When all <i>G</i> rollouts earn the same reward, every advantage equals zero and the group contributes nothing, so implementations skip uniform groups before paying for the update. This skip rule acts as a free curriculum, and it has side effects that the reward-plumbing section covers.</p>
 
-    <h2>The ladder</h2>
+    <h2>Results</h2>
     <p>I built the standard recipe one rung at a time. Direct SFT first. GRPO on top of it. Then teacher-written reasoning traces, rejection-sampled against the labels so the corpus keeps only traces whose freely-reached conclusion matches the reference and the student never imitates rationalization. CoT-SFT on those traces, GRPO again with room to think, and a matched-data control SFT to isolate confounds. Each model saw the test set once. The holdout has 2,022 examples, 30.6% of them positive.</p>
     <div class="tablewrap">
       <table>
