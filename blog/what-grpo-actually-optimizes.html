@@ -14,11 +14,8 @@
   line-height:1.7;padding:12px 16px;margin:16px 0;border-radius:6px;overflow-x:auto;
   white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 18%,transparent);
   background:color-mix(in srgb,currentColor 5%,transparent)}
-.post .eqnote{font-size:.85em;opacity:.75;margin-top:-8px}
 .post .tablewrap{overflow-x:auto;margin:18px 0}
 .post table{border-collapse:collapse;width:100%;font-size:.88em}
-.post caption{caption-side:top;text-align:left;font-size:.85em;font-weight:600;
-  letter-spacing:.04em;opacity:.75;padding-bottom:8px}
 .post th{font-weight:600;text-align:left;padding:6px 12px 6px 0;white-space:nowrap;
   border-bottom:2px solid currentColor}
 .post td{padding:6px 12px 6px 0;font-variant-numeric:tabular-nums;
@@ -75,7 +72,7 @@
     <h2>GRPO in three equations</h2>
     <p>GRPO (<a href="https://arxiv.org/abs/2402.03300">Shao et&nbsp;al., 2024</a>) is PPO without the learned critic. For each prompt <i>x</i> with reference label <i>y</i>, the trainer samples a group of <i>G</i> completions and scores each with a gated binary reward.</p>
     <div class="eq">r(c) = 𝟙[ ⟨/think⟩ is closed ] · 𝟙[ parse(c) = y ]</div>
-    <p class="eqnote">I gate on the closed tag because the model quotes the format instructions inside its own reasoning, and a lenient parser scrapes those quotes as answers.</p>
+    <p>The gate on the closed tag matters. The model quotes the format instructions inside its own reasoning, and a lenient parser scrapes those quotes as answers.</p>
     <p>The group itself supplies the baseline. Each sibling's advantage measures its reward against the others.</p>
     <div class="eq">Â<sub>i</sub> = ( r<sub>i</sub> − mean(r<sub>1..G</sub>) ) / ( std(r<sub>1..G</sub>) + δ )</div>
     <p>The update maximizes advantage-weighted log-likelihood over completion tokens. I take one on-policy step per batch, so PPO's ratio clipping never activates, and I drop the KL term (β=0).</p>
@@ -83,10 +80,9 @@
     <p>The intuition is that GRPO learns only from contrast between siblings. When all <i>G</i> rollouts earn the same reward, every advantage equals zero and the group contributes nothing, so implementations skip uniform groups before paying for the update. This skip rule acts as a free curriculum, and it has side effects that the reward-plumbing section covers.</p>
 
     <h2>The ladder</h2>
-    <p>I built the standard recipe one rung at a time. Direct SFT first. GRPO on top of it. Then teacher-written reasoning traces, rejection-sampled against the labels so the corpus keeps only traces whose freely-reached conclusion matches the reference and the student never imitates rationalization. CoT-SFT on those traces, GRPO again with room to think, and a matched-data control SFT to isolate confounds. Each model saw the test set once.</p>
+    <p>I built the standard recipe one rung at a time. Direct SFT first. GRPO on top of it. Then teacher-written reasoning traces, rejection-sampled against the labels so the corpus keeps only traces whose freely-reached conclusion matches the reference and the student never imitates rationalization. CoT-SFT on those traces, GRPO again with room to think, and a matched-data control SFT to isolate confounds. Each model saw the test set once. The holdout has 2,022 examples, 30.6% of them positive.</p>
     <div class="tablewrap">
       <table>
-        <caption>Holdout results · 2,022 examples · 30.6% positive · one evaluation per model</caption>
         <tr><th>Model</th><th class="num">Acc</th><th class="num">Balanced</th><th class="num">Prec</th><th class="num">Rec</th><th>Reasoning</th></tr>
         <tr><td>Direct SFT</td><td class="num">0.828</td><td class="num">0.788</td><td class="num">0.736</td><td class="num">0.685</td><td>none</td></tr>
         <tr><td>+ GRPO (cap 384)</td><td class="num">0.740</td><td class="num">0.785</td><td class="num">0.546</td><td class="num">0.900</td><td>~10-token stubs</td></tr>
@@ -113,10 +109,9 @@
     <p>CoT distillation on 3,250 rejection-sampled teacher traces cured the cold start. Closure hit 99.8%, informative groups came dense, and reasoning held steady near 200 tokens. The ceiling stayed put. CoT-SFT itself cost about 10 balanced points against direct SFT, and the matched-data control splits that price. Roughly 3.5 points came from the rejection filter thinning hard examples out of the corpus, and roughly 6 points from the reasoning objective itself, which dilutes the label signal across 300 tokens of imitation. The regressions concentrated on easy items, where a 0.8B model periodically argues itself out of answers it pattern-matches correctly. GRPO on top recovered almost nothing (0.740 to 0.724 on test). Reasoning helps small models when the task sits beyond direct prediction's reach, and <a href="https://arxiv.org/pdf/2506.13404">even 0.5B models show gains on math</a>. On a task direct prediction already solves, it stays overhead at every stage.</p>
 
     <h2>One curve</h2>
-    <p>The capped GRPO run appeared to earn its keep. It reached 0.90 recall at the same balanced accuracy as SFT, a useful operating point for miss-averse domains where a false negative means a regulatory incident and a false positive means ten minutes of analyst review. Then I extracted SFT's label-token probabilities and swept its decision threshold.</p>
+    <p>The capped GRPO run appeared to earn its keep. It reached 0.90 recall at the same balanced accuracy as SFT, a useful operating point for miss-averse domains where a false negative means a regulatory incident and a false positive means ten minutes of analyst review. Then I extracted SFT's label-token probabilities and swept its decision threshold until the recall on the holdout matched GRPO's 0.90.</p>
     <div class="tablewrap">
       <table>
-        <caption>Holdout · matched at recall = 0.90</caption>
         <tr><th>Model</th><th class="num">Acc</th><th class="num">Balanced</th><th class="num">Prec</th><th class="num">Rec</th></tr>
         <tr><td>GRPO (5 GPU-hours)</td><td class="num">0.740</td><td class="num">0.785</td><td class="num">0.546</td><td class="num">0.900</td></tr>
         <tr><td>SFT + threshold 0.07 (one line)</td><td class="num">0.742</td><td class="num">0.786</td><td class="num">0.548</td><td class="num">0.900</td></tr>
@@ -131,11 +126,10 @@
 
     <h2>Limitations</h2>
     <p>This is a case study with unusually thorough controls, not a survey. One task, one base model, one seed per configuration. Validation numbers carry selection pressure from a week of iteration. I measured that pressure rather than assuming it away. The two heavily-iterated arms dropped about five points from validation to test, while the barely-iterated arms held, and I report test numbers throughout. The clean labels are themselves model adjudications under a written rubric. They beat the original labels on self-consistency, but the ~11% irreducible-ambiguity residue is a property of the rubric, and it binds every number here.</p>
+    <p>The single-laptop constraint produced findings of its own. Training memory follows a roughly 3GB-per-1K-tokens law for hybrid linear-attention architectures, because the backward pass stores recurrent state per chunk per layer and no fused recompute kernels exist for Metal. I also hit two OS-level Metal bugs, one of which produced silently nondeterministic gradients. A systems appendix and all training and eval code are available on request.</p>
 
     <h2>Takeaways</h2>
     <p><strong>1.</strong> Audit labels before algorithms. Duplicated items give you a free test-retest study, and 2ε(1−ε) turns their disagreement into your accuracy ceiling. <strong>2.</strong> In RLVR, inspect what the reward plumbing taxes. Caps, gates, and parsers belong to the objective whether you meant them to or not. <strong>3.</strong> Watch what the skip rule keeps. Dynamic sampling is a distribution shift you didn't choose. <strong>4.</strong> Before crediting RL with an operating point, check the ROC curve of the model you started from. <strong>5.</strong> A negative result with the confounds removed beats a positive one that won't replicate.</p>
-
-    <p><strong>A note on hardware.</strong> The single-laptop constraint produced its own findings. Training memory follows a ~3GB-per-1K-tokens law for hybrid linear-attention architectures, because the backward pass stores recurrent state per chunk per layer and no fused recompute kernels exist for Metal. I also hit two OS-level Metal bugs, one of which produced silently nondeterministic gradients. A systems appendix and all training and eval code are available on request.</p>
 
     <hr />
     <h3>References</h3>
