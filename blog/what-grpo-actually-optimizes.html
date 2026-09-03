@@ -40,11 +40,6 @@
   <article class="post">
     <h1>What GRPO Actually Optimizes</h1>
     <p class="post-meta">Reinforcement Learning · Samuel Kahn</p>
-    <div class="callout">
-      <strong>Note.</strong> Figures and results come from work carried out at Tickr on a
-      production risk-classification dataset. Every experiment ran end to end on a single
-      MacBook (M3&nbsp;Max).
-    </div>
     <p><em>I ran six GRPO configurations on a production classification task. All of them chose points on one ROC curve, and the labels drew that curve.</em></p>
     <hr />
 
@@ -67,7 +62,7 @@
 
     <h2>Setup</h2>
     <p>The task gives the model a passage, an entity, and a named risk driver, and asks whether the passage shows actual risk. The rubric defines actual risk as a verified negative outcome (a lawsuit, recall, breach, or shutdown) that directly affects the entity and traces to the driver, with regulator exemptions, source-of-harm rules, and a default-to-negative clause. The label is binary and a string comparison verifies it. This is the canonical RLVR setting, except an annotated label plays the role of the verifier instead of a math checker. That difference drives every result below.</p>
-    <p>The data holds 6,580 rows (6,221 unique items) split into train, validation, and holdout. All models use Qwen3.5-0.8B with LoRA (r=16). Validation served as my development set and absorbed every decision. Each final model touched the holdout exactly once.</p>
+    <p>The data holds 6,580 rows (6,221 unique items) split into train, validation, and holdout. All models use Qwen3.5-0.8B with LoRA (r=16). Validation served as my development set and absorbed every decision. Each final model touched the holdout exactly once. Every stage, from SFT through GRPO rollouts to evals, ran on one M3&nbsp;Max laptop.</p>
 
     <h2>GRPO in three equations</h2>
     <p>GRPO (<a href="https://arxiv.org/abs/2402.03300">Shao et&nbsp;al., 2024</a>) is PPO without the learned critic. For each prompt <i>x</i> with reference label <i>y</i>, the trainer samples a group of <i>G</i> completions and scores each with a gated binary reward.</p>
