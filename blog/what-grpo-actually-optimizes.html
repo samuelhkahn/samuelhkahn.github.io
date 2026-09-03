@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What GRPO Actually Optimizes, Samuel Kahn</title>
+<meta name="description" content="Six GRPO runs on a production risk classifier land on one ROC curve. Label noise, reward plumbing, and what RLVR actually delivers at 0.8B.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site.js"></script>
+<style>
+/* post-local styles for elements the site stylesheet doesn't cover;
+   everything inherits the site's fonts and theme colors */
+.post .eq{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;
+  line-height:1.7;padding:12px 16px;margin:16px 0;border-radius:6px;overflow-x:auto;
+  white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 18%,transparent);
+  background:color-mix(in srgb,currentColor 5%,transparent)}
+.post .eqnote{font-size:.85em;opacity:.75;margin-top:-8px}
+.post .tablewrap{overflow-x:auto;margin:18px 0}
+.post table{border-collapse:collapse;width:100%;font-size:.88em}
+.post caption{caption-side:top;text-align:left;font-size:.85em;font-weight:600;
+  letter-spacing:.04em;opacity:.75;padding-bottom:8px}
+.post th{font-weight:600;text-align:left;padding:6px 12px 6px 0;white-space:nowrap;
+  border-bottom:2px solid currentColor}
+.post td{padding:6px 12px 6px 0;font-variant-numeric:tabular-nums;
+  border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+.post td.num,.post th.num{text-align:right;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.95em}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="../index.html">Samuel Kahn</a>
+    <a class="navlink" href="../index.html">about</a>
+    <a class="navlink active" href="../publications.html">research &amp; writing</a>
+    <a class="navlink" href="../beyond.html">sailing, mountains &amp; photography</a>
+    <button id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article class="post">
+    <h1>What GRPO Actually Optimizes</h1>
+    <p class="post-meta">Reinforcement Learning · Samuel Kahn</p>
+    <div class="callout">
+      <strong>Note.</strong> Figures and results come from work carried out at Tickr on a
+      production risk-classification dataset. Every experiment ran end to end on a single
+      MacBook (M3&nbsp;Max).
+    </div>
+    <p><em>I ran six GRPO configurations on a production classification task. All of them chose points on one ROC curve, and the labels drew that curve.</em></p>
+    <hr />
+
+    <div class="callout">
+      <strong>Summary.</strong>
+      <ul>
+        <li>I asked whether a supervised label can serve as an RLVR verifier, trading cross-entropy's dense gradient for a sparse outcome reward that can select over reasoning strategies. On this task the trade lost, and the reasons why generalize.</li>
+        <li>I fine-tuned Qwen3.5-0.8B on a production risk-classification task and ran six GRPO configurations across labels, completion caps, initializations, and curricula. I also tested CoT distillation, threshold calibration, and model routing.</li>
+        <li>Relabeling the dataset raised balanced accuracy by 21 points, four times more than any modeling change. Duplicated items audit an annotation process for free. Mine disagreed with themselves on a fifth of repeats.</li>
+        <li>Most of the reasoning-length collapse that outcome rewards produce came from my own reward plumbing. A completion cap combined with a strict format gate taxes long thoughts at 100%. Rollouts that finished their reasoning earned more reward when they thought longer.</li>
+        <li>Distill-then-RL fixed GRPO's cold start and left the score unchanged. At 0.8B, on a task that direct prediction already solves, reasoning cost accuracy at every stage.</li>
+        <li>Every trained variant chose a point on the same ROC curve as plain SFT. A logit threshold reproduces GRPO's 0.90-recall operating point within 0.002 on every metric. GRPO uniquely delivered two things, output format and operating-point control without logit access.</li>
+      </ul>
+    </div>
+
+    <h2>The hypothesis</h2>
+    <p>RLVR has mostly been studied where correctness is computable, in math and code, where an execution or equivalence check supplies the reward. Any labeled dataset supports the same construction. Treat the label as the verifier, sample a group of completions per prompt, parse each final answer, and reward agreement. The question is whether that construction buys anything over supervised fine-tuning on the same labels.</p>
+    <p>As a pure training signal, it should not. Cross-entropy delivers a dense per-token gradient from every example, while GRPO compresses each example into a sparse binary reward and spends a full group of sampled rollouts on one advantage estimate. That trade is strictly worse on sample efficiency unless the reward channel changes what gets learned rather than how fast. That was the bet. An outcome reward is the only signal here that can select over latent reasoning strategies instead of imitating labels, and risk-driver linking has the surface structure of a multi-hop problem. The model must bind an event to an entity, test the rubric's exemption clauses, and decide whether the evidence meets a verified-harm bar. If those hops compose reliably only through explicit intermediate computation, RL-elicited test-time reasoning could clear a ceiling that direct prediction cannot reach. That would transport the R1 result from competition math to supervised classification.</p>
+    <p>The task's effective complexity sat below that threshold. Direct prediction saturated the learnable fraction of the labels, and reasoning cost accuracy wherever I installed it. The negative result still localized several mechanisms worth knowing, and most of them generalize past this task.</p>
+
+    <h2>Setup</h2>
+    <p>The task gives the model a passage, an entity, and a named risk driver, and asks whether the passage shows actual risk. The rubric defines actual risk as a verified negative outcome (a lawsuit, recall, breach, or shutdown) that directly affects the entity and traces to the driver, with regulator exemptions, source-of-harm rules, and a default-to-negative clause. The label is binary and a string comparison verifies it. This is the canonical RLVR setting, except an annotated label plays the role of the verifier instead of a math checker. That difference drives every result below.</p>
+    <p>The data holds 6,580 rows (6,221 unique items) split into train, validation, and holdout. All models use Qwen3.5-0.8B with LoRA (r=16). Validation served as my development set and absorbed every decision. Each final model touched the holdout exactly once.</p>
+
+    <h2>GRPO in three equations</h2>
+    <p>GRPO (<a href="https://arxiv.org/abs/2402.03300">Shao et&nbsp;al., 2024</a>) is PPO without the learned critic. For each prompt <i>x</i> with reference label <i>y</i>, the trainer samples a group of <i>G</i> completions and scores each with a gated binary reward.</p>
+    <div class="eq">r(c) = 𝟙[ ⟨/think⟩ is closed ] · 𝟙[ parse(c) = y ]</div>
+    <p class="eqnote">I gate on the closed tag because the model quotes the format instructions inside its own reasoning, and a lenient parser scrapes those quotes as answers.</p>
+    <p>The group itself supplies the baseline. Each sibling's advantage measures its reward against the others.</p>
+    <div class="eq">Â<sub>i</sub> = ( r<sub>i</sub> − mean(r<sub>1..G</sub>) ) / ( std(r<sub>1..G</sub>) + δ )</div>
+    <p>The update maximizes advantage-weighted log-likelihood over completion tokens. I take one on-policy step per batch, so PPO's ratio clipping never activates, and I drop the KL term (β=0).</p>
+    <div class="eq">L(θ) = − (1/T) Σ<sub>i</sub> Â<sub>i</sub> Σ<sub>t</sub> log π<sub>θ</sub>(c<sub>i,t</sub> | x, c<sub>i,&lt;t</sub>)</div>
+    <p>The intuition is that GRPO learns only from contrast between siblings. When all <i>G</i> rollouts earn the same reward, every advantage equals zero and the group contributes nothing, so implementations skip uniform groups before paying for the update. This skip rule acts as a free curriculum, and it has side effects that the reward-plumbing section covers.</p>
+
+    <h2>The ladder</h2>
+    <p>I built the standard recipe one rung at a time. Direct SFT first. GRPO on top of it. Then teacher-written reasoning traces, rejection-sampled against the labels so the corpus keeps only traces whose freely-reached conclusion matches the reference and the student never imitates rationalization. CoT-SFT on those traces, GRPO again with room to think, and a matched-data control SFT to isolate confounds. Each model saw the test set once.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Holdout results · 2,022 examples · 30.6% positive · one evaluation per model</caption>
+        <tr><th>Model</th><th class="num">Acc</th><th class="num">Balanced</th><th class="num">Prec</th><th class="num">Rec</th><th>Reasoning</th></tr>
+        <tr><td>Direct SFT</td><td class="num">0.828</td><td class="num">0.788</td><td class="num">0.736</td><td class="num">0.685</td><td>none</td></tr>
+        <tr><td>+ GRPO (cap 384)</td><td class="num">0.740</td><td class="num">0.785</td><td class="num">0.546</td><td class="num">0.900</td><td>~10-token stubs</td></tr>
+        <tr><td>CoT-SFT (distilled)</td><td class="num">0.790</td><td class="num">0.740</td><td class="num">0.673</td><td class="num">0.611</td><td>~150 words</td></tr>
+        <tr><td>CoT-SFT + GRPO (cap 1024)</td><td class="num">0.782</td><td class="num">0.724</td><td class="num">0.669</td><td class="num">0.572</td><td>~160 words</td></tr>
+      </table>
+    </div>
+    <p>Plain SFT wins, and no RL configuration beat it. Each failure had a diagnosable mechanism, and the mechanisms carry the useful lessons.</p>
+
+    <h2>A verifiable reward is only as true as its labels</h2>
+    <p>The original labels contained duplicated passage-and-driver pairs, the same question answered twice by the annotation process. Duplicates work as a free test-retest audit, and this dataset failed it. The two answers disagreed on roughly 20% of repeats, uniformly across every split. If a label flips with probability ε on relabeling, duplicate disagreement equals <i>d</i> = 2ε(1−ε), so <i>d</i>&nbsp;≈&nbsp;0.18 implies ε&nbsp;≈&nbsp;0.10, and no model measured against these labels can score much above 1−ε&nbsp;≈&nbsp;0.90.</p>
+    <p>I relabeled everything with a single audited pipeline. One judge applies the written rubric, a stronger adjudicator reviews low-confidence items, and audit self-agreement lands at 86–89%, above the original labels' 80–85%. The effect dwarfed every other intervention in this post. SFT trained on noisy labels scored 0.627 balanced accuracy against the clean answer key. Retrained on clean labels, it scored 0.838. Twenty-one points, with zero hyperparameters touched.</p>
+    <p>Label noise hurts RLVR more than it hurts SFT. A mislabeled example adds no zero-mean noise for sampling to average away. It delivers the same wrong training signal on every visit, and the reward lies about that example confidently and repeatably. Verifiable means checkable. It does not mean true.</p>
+
+    <h2>The reasoning collapse came from reward plumbing</h2>
+    <p>Every GRPO run showed the now-familiar pattern of reasoning length collapsing from ~350 tokens to stubs while reward climbs. The standard reading says the model learned that thinking doesn't pay. The rollout logs say otherwise.</p>
+    <figure><img alt="Figure 1. Two-panel training curves comparing GRPO under clean and noisy labels. Reward per step on top, reasoning length per step below. Both runs collapse in reasoning length; the clean-label run collapses roughly 25 steps later." src="../assets/img/posts/grpo-figure-1-clean-vs-noisy-labels.png" /><figcaption>Figure 1. The same GRPO recipe (hard-example curriculum, completion cap 384) under clean and noisy labels. Clean labels keep long reasoning competitive about twice as long, because a truthful reward defends deliberation. Both runs still collapse to stubs, so the labels alone don't explain it.</figcaption></figure>
+    <p>The completion cap interacting with the format gate explains it. Over half of all rollouts hit the 384-token cap, and capped rollouts closed their <code>&lt;/think&gt;</code> tag 1% of the time, against 95% below 200 tokens. An unclosed tag scores zero regardless of the reasoning's quality, which amounts to a 100% tax on long thought. Among rollouts that finished, the relationship inverts. In the pre-collapse window, mean reward rose with reasoning length, from 0.59 under 50 tokens to 0.68 at 150–250 tokens. The model never discovered that thinking is useless. It rationally optimized away a truncation penalty I had built into the reward. <a href="https://arxiv.org/abs/2503.14476">DAPO</a> reaches the same conclusion at 32B scale and prescribes masking truncated rollouts out of the loss instead of zeroing them.</p>
+    <p>The skip rule carries a matching subtlety. Mastered examples produce uniform groups and vanish from the gradient, so the surviving pool drifts toward whatever the model finds contested. Late in training, that pool converges on the label-ambiguous residue where the reward deserves the least trust. Dynamic sampling concentrates compute exactly where label noise concentrates. It also reweighted my class balance without asking. Positives made up 27% of the data but 34% of the informative groups, which explains a recall drift I first blamed on the reward.</p>
+
+    <h2>Distillation fixes the cold start, not the ceiling</h2>
+    <p>With the cap raised to 1024, GRPO from the direct-SFT initialization failed to bootstrap. The policy rambled ~900 tokens without closing (6% closure), reward sat at 0.12, and each step burned ~15 minutes of sampling for almost no informative groups. This replicates, in miniature, the <a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1</a> conclusion that small models don't discover reasoning through RL alone. The emergence dynamic needs a nonzero base rate of success to amplify.</p>
+    <figure><img alt="Figure 2. Two-panel training curves comparing GRPO from a CoT-distilled initialization at cap 1024 against a direct-SFT initialization at cap 384. The distilled run starts at high reward with stable 200-token reasoning. The direct run starts near zero reward and collapses its reasoning to stubs." src="../assets/img/posts/grpo-figure-2-initialization.png" /><figcaption>Figure 2. Clean labels, two initializations. The CoT-distilled policy (blue) starts where the direct-init run needed 60 steps to arrive, trains five times faster, and holds ~200-token reasoning without collapse. It still lost to plain SFT on the test set.</figcaption></figure>
+    <p>CoT distillation on 3,250 rejection-sampled teacher traces cured the cold start. Closure hit 99.8%, informative groups came dense, and reasoning held steady near 200 tokens. The ceiling stayed put. CoT-SFT itself cost about 10 balanced points against direct SFT, and the matched-data control splits that price. Roughly 3.5 points came from the rejection filter thinning hard examples out of the corpus, and roughly 6 points from the reasoning objective itself, which dilutes the label signal across 300 tokens of imitation. The regressions concentrated on easy items, where a 0.8B model periodically argues itself out of answers it pattern-matches correctly. GRPO on top recovered almost nothing (0.740 to 0.724 on test). Reasoning helps small models when the task sits beyond direct prediction's reach, and <a href="https://arxiv.org/pdf/2506.13404">even 0.5B models show gains on math</a>. On a task direct prediction already solves, it stays overhead at every stage.</p>
+
+    <h2>One curve</h2>
+    <p>The capped GRPO run appeared to earn its keep. It reached 0.90 recall at the same balanced accuracy as SFT, a useful operating point for miss-averse domains where a false negative means a regulatory incident and a false positive means ten minutes of analyst review. Then I extracted SFT's label-token probabilities and swept its decision threshold.</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Holdout · matched at recall = 0.90</caption>
+        <tr><th>Model</th><th class="num">Acc</th><th class="num">Balanced</th><th class="num">Prec</th><th class="num">Rec</th></tr>
+        <tr><td>GRPO (5 GPU-hours)</td><td class="num">0.740</td><td class="num">0.785</td><td class="num">0.546</td><td class="num">0.900</td></tr>
+        <tr><td>SFT + threshold 0.07 (one line)</td><td class="num">0.742</td><td class="num">0.786</td><td class="num">0.548</td><td class="num">0.900</td></tr>
+      </table>
+    </div>
+    <p>The two match within 0.002 on every metric. The RL run had reproduced a decision threshold. The sweep even found a better point than anything I trained. Threshold 0.25 delivers 0.804 balanced accuracy, the best single-model number of the project, because 0.5 was never the right cut under class imbalance.</p>
+    <p>Routing between models hit the same wall from a third direction. The two model families do fail differently, and an oracle choosing per-example between SFT and the reasoning model scores 0.910. But the reasoning model only outperforms SFT inside SFT's lowest-confidence band, where both models sit near coin-flip, because that band is the label-ambiguous region. A confidence cascade routed ~3% of traffic and moved balanced accuracy by 0.001. The oracle gap is label ambiguity, not recoverable disagreement. No ground truth exists there to route toward.</p>
+    <p>Three independent strategies, RL, distilled reasoning, and routing, all turned out to select points on a single curve whose shape the data fixed. That convergence, more than any single run, is the result.</p>
+
+    <h2>What GRPO delivered</h2>
+    <p>Two things survived every ablation. The first is format. The gated reward taught perfect output structure, 100% closed reasoning and zero unparseable outputs, within ~50 steps from a 6–8% base rate. RLVR teaches format exceptionally well. The second is operating-point control without logit access. GRPO steered precision and recall through the reward alone, which matters for black-box or purely generative pipelines. If you own the model and can read a logit, a threshold does the same job for free. Neither of these is capability, and on this task, against a measured label-consistency ceiling near 0.90, capability was never on the table for any method.</p>
+
+    <h2>Limitations</h2>
+    <p>This is a case study with unusually thorough controls, not a survey. One task, one base model, one seed per configuration. Validation numbers carry selection pressure from a week of iteration. I measured that pressure rather than assuming it away. The two heavily-iterated arms dropped about five points from validation to test, while the barely-iterated arms held, and I report test numbers throughout. The clean labels are themselves model adjudications under a written rubric. They beat the original labels on self-consistency, but the ~11% irreducible-ambiguity residue is a property of the rubric, and it binds every number here.</p>
+
+    <h2>Takeaways</h2>
+    <p><strong>1.</strong> Audit labels before algorithms. Duplicated items give you a free test-retest study, and 2ε(1−ε) turns their disagreement into your accuracy ceiling. <strong>2.</strong> In RLVR, inspect what the reward plumbing taxes. Caps, gates, and parsers belong to the objective whether you meant them to or not. <strong>3.</strong> Watch what the skip rule keeps. Dynamic sampling is a distribution shift you didn't choose. <strong>4.</strong> Before crediting RL with an operating point, check the ROC curve of the model you started from. <strong>5.</strong> A negative result with the confounds removed beats a positive one that won't replicate.</p>
+
+    <p><strong>A note on hardware.</strong> The single-laptop constraint produced its own findings. Training memory follows a ~3GB-per-1K-tokens law for hybrid linear-attention architectures, because the backward pass stores recurrent state per chunk per layer and no fused recompute kernels exist for Metal. I also hit two OS-level Metal bugs, one of which produced silently nondeterministic gradients. A systems appendix and all training and eval code are available on request.</p>
+
+    <hr />
+    <h3>References</h3>
+    <p>Shao, Z., et al. (2024). <em>DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models.</em> <a href="https://arxiv.org/abs/2402.03300">arXiv:2402.03300</a>.</p>
+    <p>DeepSeek-AI (2025). <em>DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning.</em> <a href="https://arxiv.org/abs/2501.12948">arXiv:2501.12948</a>.</p>
+    <p>Yu, Q., et al. (2025). <em>DAPO: An Open-Source LLM Reinforcement Learning System at Scale.</em> <a href="https://arxiv.org/abs/2503.14476">arXiv:2503.14476</a>.</p>
+    <p>Liu, Z., et al. (2025). <em>Understanding R1-Zero-Like Training: A Critical Perspective (Dr.&nbsp;GRPO).</em> <a href="https://arxiv.org/abs/2503.20783">arXiv:2503.20783</a>.</p>
+    <p>Shao, R., et al. (2025). <em>Spurious Rewards: Rethinking Training Signals in RLVR.</em> <a href="https://arxiv.org/abs/2506.10947">arXiv:2506.10947</a>.</p>
+    <p>Yue, Y., et al. (2025). <em>Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?</em> <a href="https://arxiv.org/abs/2504.13837">arXiv:2504.13837</a>.</p>
+    <p>Pan, J., et al. (2025). <em>TinyZero.</em> <a href="https://github.com/Jiayi-Pan/TinyZero">GitHub repository</a>.</p>
+    <p>Zeng, W., et al. (2025). <em>SimpleRL-Zoo: Investigating and Taming Zero Reinforcement Learning.</em> <a href="https://arxiv.org/abs/2503.18892">arXiv:2503.18892</a>.</p>
+    <p>(2025). <em>A Technical Study into Small Reasoning Language Models.</em> <a href="https://arxiv.org/pdf/2506.13404">arXiv:2506.13404</a>.</p>
+    <a class="backlink" href="../publications.html">← all research &amp; writing</a>
+  </article>
+
+  <footer>
+    <div>© 2026 Samuel Kahn</div>
+    <div><a href="mailto:samuelkahn@berkeley.edu">samuelkahn@berkeley.edu</a> &middot; <a href="mailto:sam@pumpinggradients.com">sam@pumpinggradients.com</a></div>
+  </footer>
+</div>
+</body>
+</html>
