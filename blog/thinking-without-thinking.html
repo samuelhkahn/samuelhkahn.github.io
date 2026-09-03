@@ -23,14 +23,7 @@
 <div class="wrap">
   <article class="post">
     <h1>Whispers of Latent Reasoning: How RiskWise Achieves More Accurate Risk Attribution</h1>
-    <p class="post-meta">Model post-training</p>
-    <div class="callout">
-      <strong>Note.</strong> Co-authored with Maia Kennedy and originally published as “Thinking Without Thinking” in
-      <a href="https://medium.com/riskwise-ai-insights/thinking-without-thinking-how-riskwise-achieves-more-accurate-risk-attribution-37f5c34d71d7">RiskWise.ai Insights on Medium</a>,
-      reproduced here as part of my portfolio. The benchmark table and figure are in the
-      <a href="https://medium.com/riskwise-ai-insights/thinking-without-thinking-how-riskwise-achieves-more-accurate-risk-attribution-37f5c34d71d7">original post</a>.
-      Figures and results are from work carried out at Tickr.
-    </div>
+    <p class="post-meta">With Maia Kennedy. Originally published as &ldquo;Thinking Without Thinking&rdquo; on <a href="https://medium.com/riskwise-ai-insights/thinking-without-thinking-how-riskwise-achieves-more-accurate-risk-attribution-37f5c34d71d7">RiskWise.ai Insights</a>.</p>
 
     <p>Most risk intelligence systems fail the same way: they confuse what is being discussed with
       what is actually at risk. In an environment saturated with speculation, warnings, and early
@@ -69,7 +62,6 @@
       rather than emitting it as text, RiskWise can perform this distinction reliably and at scale,
       enabling more precise risk indices and earlier detection of emerging threats.</p>
 
-    <hr />
     <h2>Risk is about epistemic status, not topic detection</h2>
     <p>In operational settings, effective risk measurement requires distinguishing between two
       fundamentally different signals: perceived risk, credible signals that an entity is believed
@@ -92,7 +84,6 @@
       concern from sentiment, and uncertainty from evidence, with the precision required for
       real-world decision-making.</p>
 
-    <hr />
     <h2>Grounded, entity-specific risk attribution</h2>
     <p>Each evaluation example consists of three inputs and one constrained output. The inputs are
       an <strong>entity</strong> (the specific object for which risk exposure is being evaluated,
@@ -117,7 +108,6 @@
       signal that the entity is believed to be exposed to the risk driver; <code>0</code> indicates
       that no such signal is present in the text.</p>
 
-    <hr />
     <h2>RiskWise models outperform on entity-level risk attribution</h2>
     <p>We evaluate all models on the same entity-level perceived-risk classification benchmark,
       consisting of 990 examples (648 negative, 342 positive). Each model is tested under identical
@@ -179,7 +169,6 @@
         attribution requires domain-aligned reasoning rather than generic instruction tuning.</li>
     </ul>
 
-    <hr />
     <h2>Why "thinking" helps, even when you hide the thinking</h2>
     <p>This result follows directly from how the models were trained, without requiring speculation
       about internal mechanisms.</p>
@@ -213,7 +202,6 @@
       surface-level pattern matches. They are intermediate checks that chain-of-thought training
       reinforces, even when those checks are never emitted as text.</p>
 
-    <hr />
     <h2>Additional benefits of "thinking without thinking"</h2>
     <p>There are both practical and scientific reasons to suppress emitted reasoning text in
       production-grade risk systems. On <strong>faithfulness</strong>, emitted chain-of-thought
@@ -228,7 +216,6 @@
       deterministic, machine-parseable outputs, and free-form reasoning text introduces
       unnecessary variability that can make parsing errors more likely.</p>
 
-    <hr />
     <h2>Takeaways</h2>
     <p>Risk attribution is fundamentally an epistemic reasoning problem, not a topic-matching task.
       It requires models to interpret uncertainty, attribution, and scope, distinguishing

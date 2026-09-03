@@ -23,12 +23,7 @@
 <div class="wrap">
   <article class="post">
     <h1>Improving Forecasting Models with Large Language Models</h1>
-    <p class="post-meta">Forecasting</p>
-    <div class="callout">
-      <strong>Note.</strong> Originally published on the
-      <a href="https://www.tickr.com/blog/posts/improving-forecasting-models-with-large-language-models/">Tickr engineering blog</a> and reproduced here as part of my portfolio.
-      Figures and results are from work carried out at Tickr.
-    </div>
+    <p class="post-meta">Originally published on the <a href="https://www.tickr.com/blog/posts/improving-forecasting-models-with-large-language-models/">Tickr engineering blog</a>.</p>
     <p>At Tickr, we use large language models (LLMs) to enhance the data science life cycle. In our <a href="https://www.tickr.com/blog/posts/smartforecast-for-cpgs-revolutionizing-decision-making-with-ai/">previous</a> post, we explained how LLMs can improve access and explainability of large-scale multivariate forecasts. In this post we introduce Augur, demonstrating how integrating the reasoning capabilities of LLMs can improve the predictive performance of time series forecasting models and help interpret the relationship of influential factors on forecasted variables. Our proposed method reduced the mean absolute percentage error (MAPE) by an <strong>average of 15.6%</strong> when compared to naive univariate autoregression models, with <strong>a 13 times decrease in run time</strong> and added <strong>logical validation</strong> of covariates. These qualitative and quantitative improvements on traditional modeling techniques position our Augur as an industry leader in explainable forecasting.</p>
     <p>Section 1 provides a detailed introduction and motivation for building our solution. Section 2 of this post discusses the data used to build our Augur system. Section 3 describes the Augur system in detail. Section 4 provides experimental results demonstrating how our system can improve out-of-sample performance and reduce spurious predictors. Section 5 provides a discussion of the Augur system and future work and section 6 provides concluding remarks.</p>
     <h2>1. Introduction</h2>

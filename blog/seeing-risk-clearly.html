@@ -23,24 +23,15 @@
 <div class="wrap">
   <article class="post">
     <h1>Seeing Risk Clearly: How RiskWise AI Moves Past Emotion to Measure Risk Exposure</h1>
-    <p class="post-meta">Risk</p>
-    <div class="callout">
-      <strong>Note.</strong> Originally published in
-      <a href="https://medium.com/riskwise-ai-insights/seeing-risk-clearly-how-riskwise-ai-moves-past-emotion-to-measure-risk-exposure-d5db36b76119">RiskWise.ai Insights on Medium</a>
-      and reproduced here as part of my portfolio. Figures and results are from work carried out at
-      Tickr.
-    </div>
+    <p class="post-meta">Originally published on <a href="https://medium.com/riskwise-ai-insights/seeing-risk-clearly-how-riskwise-ai-moves-past-emotion-to-measure-risk-exposure-d5db36b76119">RiskWise.ai Insights</a>.</p>
     <blockquote>
     <p>“Risk comes from not knowing what you’re doing.”</p>
-    <p>,  Warren Buffett
-    </p>
+    <p>&mdash; Warren Buffett</p>
     </blockquote>
-    <hr />
     <h2>Introduction</h2>
     <p>Materialized risk begins as a faint signal. Before lawsuits, recalls, or brand switching occur, traces of exposure ripple across news, legal filings, academic journal, forums, social media, and more. Some are like finding a needle in a haystack, others more obvious, but all are useless unless we isolate the right primitive: one that captures evidence of exposure rather than emotion. At RiskWise AI, we call this <em>primitive perceived risk</em>.</p>
     <p>We formalize perceived risk as a risk driver, data channel, and entity-aware evidence measure, where a <em>risk driver</em> represents the underlying mechanism through which exposure occurs. For instance, within the broader risk of <em>Ultra-Processed Foods</em>, risk drivers may include mechanisms such as <em>carcinogenicity</em>, <em>mental-health impact</em>, and <em>regulatory scrutiny,</em> each reflecting a distinct pathway through which exposure manifests. **Measuring perceived risk at scale has only become practical with modern AI. More specifically, RiskWise’s proprietary AI search, large language models, and agents allow for very accurate measurement of perceived risk while generalizing to new risk topics and risk drivers. At scale, RiskWise uncovers a latent, directional structure in public discourse, evidence that perceived risk behaves as a coherent, actionable signal rather than mere emotional tone, such as sentiment. </p>
     <p>The sections that follow outline the mathematical foundations behind large-scale perceived-risk detection while demonstrating, both empirically and qualitatively, why perceived risk captures a fundamentally different dimension of language than sentiment.</p>
-    <hr />
     <h2>1. Perceived Risk: Mechanism-Aligned Exposure</h2>
     <p>Perceived risk is a risk driver conditioned signal that expresses exposure evidence about an entity, risk driver, data channel, or topic. It is strongly differentiated from aspect‑based and document‑level sentiment. <em>Most importantly, exposure evidence is detected before negative outcomes materialize e.g. litigation, recalls, or harm to brand reputation</em>. </p>
     <p>Now let $d$ $$ be a document (post, article, filing), $e$ an entity (company, product, person), $r$ $$ a risk topic (e.g., PFAS, AI misuse), and $k$ a risk driver (e.g., toxicity, privacy, regulatory scrutiny). We define a binary indicator for “perceived risk exposure evidence present”:</p>
@@ -56,7 +47,6 @@
     s_{d,e} \equiv \Pr\big(Y=\text{positive}\mid d,e\big)
     $$</p>
     <p>commonly used as a proxy for risk in markets, but <strong>not</strong> mechanism‑aligned for exposure.</p>
-    <hr />
     <h2>2. Perceived Risk by Stochastic Consensus</h2>
     <p>Operationally, the RiskWise risk scoring LLMs are trained to link an exposure decision  $\hat{y}^{(j)}_{d,e,r,k}\in{0,1}$ <em>at temperature $\tau&gt;0$.</em> We aggregate multiple passes with a strict consensus:
     **</p>
@@ -71,7 +61,6 @@
     <p>$$</p>
     <p>Consensus or thresholding across these samples (e.g., unanimity, majority) then converts that estimate into a stable binary decision while suppressing random errors.</p>
     <p>Under i.i.d. where $\hat{y}^{(j)}\sim \mathrm{Bernoulli}(p)$, the false‑positive probability for a negative example is $p^{n}$, which decays exponentially in $n$. In practice, the samples are weakly correlated but in RiskWise AI observe a false postivie rate near zero. </p>
-    <hr />
     <h2>3. The Risk Exposure Rate</h2>
     <p>In practice, we begin with a general query anchored to an entity, e.g.,  $q(e)$ = “Costco,” executed per channel $c$ and time window $t$. Note that we aggregate documents into time windows e.g. daily, weekly, etc… Let  $\mathcal{D}<em d_e_r_k="d,e,r,k">{t,c}(q(e)))$ be the retrieved documents in some time window. Detect mentions of entity $e$ in each document $d$$,$ and apply a similar risk-driver linking methodology from section 2 to obtain  $\hat{y}</em>$ :</p>
     <ul>
@@ -131,7 +120,6 @@
     <p>As a concrete example, Figure 2 visualizes the selected indices for Coca-Cola, highlighting the composite overall risk index against its driver-level components over the past five years. While overall perceived risk has declined, certain categories such as Ultra-Processed Foods show a persistent upward trend.</p>
     <p>This illustrates how the index framework captures both macro-level stabilization and localized increases in specific risks, providing a granular, actionable view of where emerging exposure is concentrated and where strategic attention should be focused.</p>
     <h2>5. Mechanism-Align Perceived Risk vs. Aspect-Based Sentiment</h2>
-    <hr />
     <h2>5.1 Perceived Risk ≠ Sentiment</h2>
     <p>We’ve defined perceived risk as a structured signal of exposure evidence. what it means when an entity shows up in the risk stream. Here, we test how that signal relates to sentiment.</p>
     <p>Across <strong>12,941</strong> documents, RiskWise AI flags <strong>879</strong> exposure-positive cases, roughly <strong>6.8%</strong> of the corpus. Sentiment scores, derived from OpenAI’s o3 reasoning model for aspect-based sentiment, are scored for an entity $e$ in document $d$ via stochastic consensus:</p>
@@ -145,7 +133,6 @@
     <li>7.9% positive</li>
     </ul>
     <p>That shift is expected, risk stories often carry a negative tone, but more than half remain neutral, reflecting how exposure evidence tends to appear in procedural, factual language rather than emotionally charged writing.</p>
-    <hr />
     <h3>5.1.1 How sentiment relates to exposure</h3>
     <p>The heat map below shows how often exposure actually occurs within each sentiment class, essentially the conditional probability $P(y \mid s_{\mathrm{sent}})$. Each cell displays both the probability of true exposure and the underlying document count.</p>
     <figure><img alt="Figure 3: Conditional probability of true exposure given sentiment, $(P(y \mid s_{\text{sent}})$.   Each cell shows the exposure probability with the number of documents in brackets.  " src="../assets/img/posts/seeing-risk-clearly-heatmap_Py_given_sent_clean.png" /><figcaption>Figure 3: Conditional probability of true exposure given sentiment, $(P(y \mid s_{\text{sent}})$.   Each cell shows the exposure probability with the number of documents in brackets.  </figcaption></figure>
@@ -193,7 +180,6 @@
     </blockquote>
     <p><strong>Why Sentiment:</strong> The broader article is framed as an industry outlook and highlights recovery measures; overall language leans optimistic<strong>.</strong> Even when the local context reads as negative, a frontier model like OpenAI o3, stochastically sampled for sentiment consensus, still cannot be used in place of driver-conditioned risk identification.</p>
     <p><strong>Why Exposure:</strong> The entity-anchored span contains “could shut down,” a direct implication of the driver <strong>external-shocks</strong> which indicates changes in market conditions. </p>
-    <hr />
     <h3>B) Exposure: At Risk; Sentiment: Neutral</h3>
     <ul>
     <li><strong>Entity:</strong> <em>OpenAI</em></li>
@@ -208,7 +194,6 @@
     </blockquote>
     <p><strong>Why Sentiment:</strong> The text is procedural and legal in nature; it reads like a docket entry with minimal emotional language.</p>
     <p><strong>Why Exposure:</strong> Terms like “ECF” and “Defendant” near OpenAI are litigation cues for exposure to copyright/IP litigation.  </p>
-    <hr />
     <h3>C) Exposure: Not at Risk; Sentiment: Negative</h3>
     <ul>
     <li><strong>Entity:</strong> <em>Microsoft</em></li>

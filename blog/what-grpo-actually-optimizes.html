@@ -39,23 +39,8 @@
 <div class="wrap">
   <article class="post">
     <h1>What GRPO Actually Optimizes</h1>
-    <p class="post-meta">Reinforcement learning</p>
-    <p><em>I ran six GRPO configurations on a production classification task. All of them chose points on one ROC curve, and the labels drew that curve.</em></p>
-    <hr />
 
-    <div class="callout">
-      <strong>Summary.</strong>
-      <ul>
-        <li>I asked whether a supervised label can serve as an RLVR verifier, trading cross-entropy's dense gradient for a sparse outcome reward that can select over reasoning strategies. On this task the trade lost, and the reasons why generalize.</li>
-        <li>I fine-tuned Qwen3.5-0.8B on a production risk-classification task and ran six GRPO configurations across labels, completion caps, initializations, and curricula. I also tested CoT distillation, threshold calibration, and model routing.</li>
-        <li>Relabeling the dataset raised balanced accuracy by 21 points, four times more than any modeling change. Duplicated items audit an annotation process for free. Mine disagreed with themselves on a fifth of repeats.</li>
-        <li>Most of the reasoning-length collapse that outcome rewards produce came from my own reward plumbing. A completion cap combined with a strict format gate taxes long thoughts at 100%. Rollouts that finished their reasoning earned more reward when they thought longer.</li>
-        <li>Distill-then-RL fixed GRPO's cold start and left the score unchanged. At 0.8B, on a task that direct prediction already solves, reasoning cost accuracy at every stage.</li>
-        <li>Every trained variant chose a point on the same ROC curve as plain SFT. A logit threshold reproduces GRPO's 0.90-recall operating point within 0.002 on every metric. GRPO uniquely delivered two things, output format and operating-point control without logit access.</li>
-      </ul>
-    </div>
 
-    <h2>The hypothesis</h2>
     <p>RLVR has mostly been studied where correctness is computable, in math and code, where an execution or equivalence check supplies the reward. Any labeled dataset supports the same construction. Treat the label as the verifier, sample a group of completions per prompt, parse each final answer, and reward agreement. The question is whether that construction buys anything over supervised fine-tuning on the same labels.</p>
     <p>As a pure training signal, it should not. Cross-entropy delivers a dense per-token gradient from every example, while GRPO compresses each example into a sparse binary reward and spends a full group of sampled rollouts on one advantage estimate. That trade is strictly worse on sample efficiency unless the reward channel changes what gets learned rather than how fast. That was the bet. An outcome reward is the only signal here that can select over latent reasoning strategies instead of imitating labels, and risk-driver linking has the surface structure of a multi-hop problem. The model must bind an event to an entity, test the rubric's exemption clauses, and decide whether the evidence meets a verified-harm bar. If those hops compose reliably only through explicit intermediate computation, RL-elicited test-time reasoning could clear a ceiling that direct prediction cannot reach. That would transport the R1 result from competition math to supervised classification.</p>
     <p>The task's effective complexity sat below that threshold. Direct prediction saturated the learnable fraction of the labels, and reasoning cost accuracy wherever I installed it. To much of my chagrin, the answer was no. It would have been a fun result. The negative result still localized several mechanisms worth knowing, and most of them generalize past this task.</p>
@@ -74,7 +59,6 @@
     <div class="eq">L(θ) = − (1/T) Σ<sub>i</sub> Â<sub>i</sub> Σ<sub>t</sub> log π<sub>θ</sub>(c<sub>i,t</sub> | x, c<sub>i,&lt;t</sub>)</div>
     <p>The intuition is that GRPO learns only from contrast between siblings. When all <i>G</i> rollouts earn the same reward, every advantage equals zero and the group contributes nothing, so implementations skip uniform groups before paying for the update. This skip rule acts as a free curriculum, and it has side effects that the reward-plumbing section covers.</p>
 
-    <h2>Results</h2>
     <p>I built the standard recipe one rung at a time. Direct SFT first. GRPO on top of it. Then teacher-written reasoning traces, rejection-sampled against the labels so the corpus keeps only traces whose freely-reached conclusion matches the reference and the student never imitates rationalization. CoT-SFT on those traces, GRPO again with room to think, and a matched-data control SFT to isolate confounds. Each model saw the test set once. The holdout has 2,022 examples, 30.6% of them positive.</p>
     <div class="tablewrap">
       <table>
@@ -119,14 +103,11 @@
     <h2>What GRPO delivered</h2>
     <p>Two things survived every ablation. The first is format. The gated reward taught perfect output structure, 100% closed reasoning and zero unparseable outputs, within ~50 steps from a 6–8% base rate. RLVR teaches format exceptionally well. The second is operating-point control without logit access. GRPO steered precision and recall through the reward alone, which matters for black-box or purely generative pipelines. If you own the model and can read a logit, a threshold does the same job for free. Neither of these is capability, and on this task, against a measured label-consistency ceiling near 0.90, capability was never on the table for any method.</p>
 
-    <h2>Limitations</h2>
     <p>This is a case study with unusually thorough controls, not a survey. One task, one base model, one seed per configuration. Validation numbers carry selection pressure from a week of iteration. I measured that pressure rather than assuming it away. The two heavily-iterated arms dropped about five points from validation to test, while the barely-iterated arms held, and I report test numbers throughout. The clean labels are themselves model adjudications under a written rubric. They beat the original labels on self-consistency, but the ~11% irreducible-ambiguity residue is a property of the rubric, and it binds every number here.</p>
 
-    <h2>Takeaways</h2>
     <p><strong>1.</strong> Audit labels before algorithms. Duplicated items give you a free test-retest study, and 2ε(1−ε) turns their disagreement into your accuracy ceiling. <strong>2.</strong> In RLVR, inspect what the reward plumbing taxes. Caps, gates, and parsers belong to the objective whether you meant them to or not. <strong>3.</strong> Watch what the skip rule keeps. Dynamic sampling is a distribution shift you didn't choose. <strong>4.</strong> Before crediting RL with an operating point, check the ROC curve of the model you started from. <strong>5.</strong> A negative result with the confounds removed beats a positive one that won't replicate.</p>
 
-    <hr />
-    <h3>References</h3>
+    <h2>References</h2>
     <p>Shao, Z., et al. (2024). <em>DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models.</em> <a href="https://arxiv.org/abs/2402.03300">arXiv:2402.03300</a>.</p>
     <p>DeepSeek-AI (2025). <em>DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning.</em> <a href="https://arxiv.org/abs/2501.12948">arXiv:2501.12948</a>.</p>
     <p>Yu, Q., et al. (2025). <em>DAPO: An Open-Source LLM Reinforcement Learning System at Scale.</em> <a href="https://arxiv.org/abs/2503.14476">arXiv:2503.14476</a>.</p>

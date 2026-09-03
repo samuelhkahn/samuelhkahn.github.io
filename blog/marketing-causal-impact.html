@@ -23,12 +23,7 @@
 <div class="wrap">
   <article class="post">
     <h1>Predicting the Impact of Marketing Campaigns with Artificial Intelligence</h1>
-    <p class="post-meta">Causal inference</p>
-    <div class="callout">
-      <strong>Note.</strong> This essay was written for the Tickr engineering blog and is
-      reproduced here as part of my portfolio. Figures and results are from work carried out at
-      Tickr.
-    </div>
+    <p class="post-meta">Written for the Tickr engineering blog.</p>
     <figure><img src="../assets/img/posts/marketing-causal-impact-illustration.png" alt="Observed sales against a modelled counterfactual during a campaign window"><figcaption>Illustrative reconstruction of the counterfactual approach described below: observed sales (red) against the modelled counterfactual (grey), with the campaign window shaded. The original figures did not survive the export.</figcaption></figure>
     <p>One of the most challenging problems marketing teams face is measuring the effect of marketing campaigns on the sales of a product. Budget allocation decisions, identifying successful strategies, and maximizing sales &amp; return on investment (”ROI”) are guided by understanding such relationships. This is often due to incorrect analysis of marketing campaign effectiveness. Tickr’s Marketing Causal Impact Analysis uses state-of-the-art machine learning to extract the true effect of a marketing campaign on sales, ROI, or any business metric relevant to our customers. This empowers them to make confident and better marketing decisions that lead to increased sales or ROI.</p>
     <p>Measuring the impact of marketing campaigns is difficult, even for companies with advanced data science teams. Trend, seasonality, holidays, noise, events and any other latent factors in the data-generating process can lead analyses astray and impact decision-making processes. We created Tickr’s Causal Impact Analysis tool to allow marketing teams to extract the true effect of marketing campaigns in the presence of the aforementioned factors. In this paper, we use simulated business time series and marketing campaigns to evaluate the performance of our tool under complex conditions and measure the true performance of marketing campaigns. Let’s look at an example to understand how our tool works.</p>

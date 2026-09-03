@@ -23,12 +23,7 @@
 <div class="wrap">
   <article class="post">
     <h1>Cold Start &amp; Tuning for Retrieval Augmented Generation</h1>
-    <p class="post-meta">Retrieval</p>
-    <div class="callout">
-      <strong>Note.</strong> This essay was written for the Tickr engineering blog and is
-      reproduced here as part of my portfolio. Figures and results are from work carried out at
-      Tickr.
-    </div>
+    <p class="post-meta">Written for the Tickr engineering blog.</p>
     <h2>Introduction</h2>
     <p>In the current data-driven world, businesses are adopting advanced technologies to stay competitive. Large language models (LLMs) are revolutionizing the way businesses interact with data, allowing intelligent conversations and extracting valuable insights. However, LLMs have their limitations - first, they are trained on general data with historical cut-off dates making it challenging for them to provide real-time insights. In addition, LLMs do not have access to proprietary data further limiting their scope. Second, without being provided relevant external data, LLMs struggle to answer specific questions related to a company’s specific business application. </p>
     <p>A retrieval augmented generation (RAG) system addresses these challenges by integrating external data, potentially from private company data, with an LLM to provide accurate and up-to-date responses. A RAG system fetches relevant external data to add to the LLM’s context to accurately answer a question.  Utilizing RAG-based LLM systems is an important tool for enabling LLMs to provide accurate responses to real-time inquiries.</p>
